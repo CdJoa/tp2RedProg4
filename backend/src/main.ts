@@ -9,4 +9,6 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   await app.listen(process.env.PORT ?? 3000);
 }
-await bootstrap();
+// void (no await): en Vercel, app.listen() queda interceptado y nunca termina;
+// con "await" el módulo no termina de cargar y cada request se cuelga.
+void bootstrap();
