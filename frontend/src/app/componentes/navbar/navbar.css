@@ -1,0 +1,46 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 0.75rem 1.5rem;
+  background: #1e293b;
+  color: white;
+}
+
+.marca {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: white;
+  text-decoration: none;
+}
+
+.links {
+  margin-left: auto;
+  display: flex;
+  gap: 1rem;
+}
+
+.links a {
+  color: #cbd5e1;
+  text-decoration: none;
+}
+
+.links a.activo {
+  color: white;
+  border-bottom: 2px solid #38bdf8;
+}
+
+.usuario {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.usuario button {
+  background: transparent;
+  border: 1px solid #cbd5e1;
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+}

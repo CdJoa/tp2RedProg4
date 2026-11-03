@@ -1,0 +1,15 @@
+<nav class="navbar">
+  <a class="marca" routerLink="/home">Red Social</a>
+
+  <div class="links">
+    <a routerLink="/login" routerLinkActive="activo">Login</a>
+    <a routerLink="/registro" routerLinkActive="activo">Registro</a>
+  </div>
+
+  <div class="usuario">
+    @if (auth.usuarioActual(); as usuario) {
+      <span>{{ usuario.nombreUsuario }}</span>
+      <button (click)="cerrarSesion()">Cerrar sesión</button>
+    }
+  </div>
+</nav>
