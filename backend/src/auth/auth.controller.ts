@@ -5,13 +5,11 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  UnauthorizedException,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Public } from '@nestjs/authentication';
-import { CredentialsService } from './credentials.service.js';
+import { AuthService } from './auth.service.js';
 import { SignInDto } from './auth.dto.js';
 import { CreateUsuarioDto } from '../usuarios/dto/create-usuario.dto.js';
 import { FileService } from '../archivos/file.service.js';
@@ -19,12 +17,11 @@ import { FileService } from '../archivos/file.service.js';
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly credentials: CredentialsService,
+    private readonly authService: AuthService,
     private readonly files: FileService,
   ) {}
 
   // POST /auth/registro  (multipart/form-data: campos del usuario + archivo "imagenPerfil")
-  @Public()
   @Post('registro')
   @UseInterceptors(
     FileInterceptor('imagenPerfil', {
@@ -44,18 +41,13 @@ export class AuthController {
     if (imagen) {
       datos.imagenPerfil = await this.files.cloudinaryUploader(imagen);
     }
-    return this.credentials.register(datos); // 201 Created
+    return this.authService.register(datos); // 201 Created: { access_token, usuario }
   }
 
   // POST /auth/login  (JSON: { identificador, password })
-  @Public()
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  async login(@Body() { identificador, password }: SignInDto) {
-    const usuario = await this.credentials.verify(identificador, password);
-    if (!usuario) {
-      throw new UnauthorizedException('Usuario o contraseña incorrectos');
-    }
-    return usuario;
+  login(@Body() { identificador, password }: SignInDto) {
+    return this.authService.login(identificador, password); // 200: { access_token, usuario } o 401
   }
 }

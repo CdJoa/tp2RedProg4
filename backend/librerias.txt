@@ -9,3 +9,9 @@ npm install cloudinary
 npm install -D @types/multer
 
 npm install @nestjs/authentication
+npm install --save @nestjs/jwt
+
+
+
+npm i cookie-parser 
+npm i -D @types/cookie-parser //en las dependencias de desarrollo, instalamos la "version de typescript" de ese paquete
