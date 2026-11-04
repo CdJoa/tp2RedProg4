@@ -1,7 +1,10 @@
-<article class="tarjeta">
+<article class="publicacion">
   <header class="autor">
-    @if (publicacion().usuario.imagenPerfil) {
-      <img class="avatar" [src]="publicacion().usuario.imagenPerfil" alt="" />
+    <!-- Sin foto, o si la imagen no carga: cuadradito "404" -->
+    @if (publicacion().usuario.imagenPerfil && !fotoFallo()) {
+      <img class="avatar" [src]="publicacion().usuario.imagenPerfil" alt="" (error)="fotoFallo.set(true)" />
+    } @else {
+      <div class="avatar sin-foto">404</div>
     }
     <div>
       <strong>{{ publicacion().usuario.nombre }} {{ publicacion().usuario.apellido }}</strong>

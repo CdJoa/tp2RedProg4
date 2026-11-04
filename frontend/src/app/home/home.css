@@ -3,3 +3,14 @@
   margin: 2rem auto;
   padding: 0 1rem;
 }
+
+/* Saludo grande sobre el fondo azul, con brillo */
+.home h1 {
+  margin: 0 0 1rem;
+  font-size: 1.8rem;
+  font-weight: 300;
+  color: white;
+  text-shadow:
+    0 0 10px rgb(150 215 255 / 0.8),
+    0 2px 4px rgb(0 30 70 / 0.7);
+}

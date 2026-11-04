@@ -9,8 +9,16 @@
 
   <div class="orden">
     <span>Ordenar por:</span>
-    <button type="button" [class.activo]="orden() === 'fecha'" (click)="cambiarOrden('fecha')">Más recientes</button>
-    <button type="button" [class.activo]="orden() === 'meGusta'" (click)="cambiarOrden('meGusta')">Más me gusta</button>
+    <button type="button" [class.activo]="orden() === 'fecha'" (click)="cambiarOrden('fecha')">Fecha</button>
+    <button type="button" [class.activo]="orden() === 'meGusta'" (click)="cambiarOrden('meGusta')">Me gusta</button>
+    <!-- Alterna descendente / ascendente para el orden elegido -->
+    <button type="button" class="direccion" (click)="invertirDireccion()">
+      @if (direccion() === 'desc') {
+        ↓ {{ orden() === 'fecha' ? 'Más recientes primero' : 'Más gustadas primero' }}
+      } @else {
+        ↑ {{ orden() === 'fecha' ? 'Más antiguas primero' : 'Menos gustadas primero' }}
+      }
+    </button>
   </div>
 
   @if (cargando()) {

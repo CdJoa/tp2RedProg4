@@ -5,15 +5,26 @@ import { PaginaPublicaciones } from '../modelos/publicacion';
 import { environment } from '../../environments/environment';
 
 export type Orden = 'fecha' | 'meGusta';
+export type Direccion = 'desc' | 'asc';
 
 @Service()
 export class PublicacionesService {
   private http = inject(HttpClient);
   private apiUrl = `${environment.apiUrl}/publicaciones`;
 
-  // GET /publicaciones?orden=...&offset=...&limit=...&usuario=...
-  listar(orden: Orden, offset: number, limit: number, usuario?: string): Observable<PaginaPublicaciones> {
-    let params = new HttpParams().set('orden', orden).set('offset', offset).set('limit', limit);
+  // GET /publicaciones?orden=...&direccion=...&offset=...&limit=...&usuario=...
+  listar(
+    orden: Orden,
+    offset: number,
+    limit: number,
+    usuario?: string,
+    direccion: Direccion = 'desc',
+  ): Observable<PaginaPublicaciones> {
+    let params = new HttpParams()
+      .set('orden', orden)
+      .set('direccion', direccion)
+      .set('offset', offset)
+      .set('limit', limit);
     if (usuario) {
       params = params.set('usuario', usuario);
     }

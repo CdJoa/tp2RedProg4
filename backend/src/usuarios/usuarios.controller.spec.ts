@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
 import { UsuariosController } from './usuarios.controller.js';
 import { UsuariosService } from './usuarios.service.js';
+import { FileService } from '../archivos/file.service.js';
 
 describe('UsuariosController', () => {
   let controller: UsuariosController;
@@ -14,6 +15,7 @@ describe('UsuariosController', () => {
         { provide: UsuariosService, useValue: {} },
         // Lo necesita el AuthGuard que protege /usuarios
         { provide: JwtService, useValue: {} },
+        { provide: FileService, useValue: {} },
       ],
     }).compile();
 

@@ -26,10 +26,19 @@ export class PublicacionesService {
     });
   }
 
-  // GET /publicaciones?orden=fecha|meGusta&usuario=<id>&offset=0&limit=10
-  async findAll(orden: string, usuario: string | undefined, offset: number, limit: number) {
+  // GET /publicaciones?orden=fecha|meGusta&direccion=desc|asc&usuario=<id>&offset=0&limit=10
+  async findAll(
+    orden: string,
+    direccion: string,
+    usuario: string | undefined,
+    offset: number,
+    limit: number,
+  ) {
     if (orden !== 'fecha' && orden !== 'meGusta') {
       throw new BadRequestException("orden debe ser 'fecha' o 'meGusta'");
+    }
+    if (direccion !== 'desc' && direccion !== 'asc') {
+      throw new BadRequestException("direccion debe ser 'desc' o 'asc'");
     }
     if (offset < 0 || limit < 1 || limit > 50) {
       throw new BadRequestException('offset debe ser 0 o más, y limit entre 1 y 50');
@@ -44,9 +53,14 @@ export class PublicacionesService {
       filtro.usuario = usuario;
     }
 
-    // Más nuevas primero, o más gustadas primero (y entre iguales, la más nueva)
+    // En Mongo: -1 = descendente (mayor a menor), 1 = ascendente (menor a mayor)
+    // desc: más nuevas / más gustadas primero; asc: al revés
+    const sentido = direccion === 'asc' ? 1 : -1;
+    // Con meGusta, entre las que tienen la misma cantidad desempata por fecha
     const ordenamiento: Record<string, 1 | -1> =
-      orden === 'meGusta' ? { cantidadMeGusta: -1, createdAt: -1 } : { createdAt: -1 };
+      orden === 'meGusta'
+        ? { cantidadMeGusta: sentido, createdAt: sentido }
+        : { createdAt: sentido };
 
     const publicaciones = await this.publicacionModel
       .find(filtro)

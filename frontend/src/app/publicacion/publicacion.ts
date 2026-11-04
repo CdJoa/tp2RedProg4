@@ -34,6 +34,8 @@ export class Publicacion {
   protected cantidadMeGusta = linkedSignal(() => this.publicacion().cantidadMeGusta ?? 0);
 
   protected procesando = signal(false);
+  // true si la foto del autor no se pudo cargar
+  protected fotoFallo = signal(false);
 
   protected alternarMeGusta() {
     if (this.procesando()) return;

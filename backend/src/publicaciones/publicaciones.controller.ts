@@ -56,16 +56,17 @@ export class PublicacionesController {
     return this.publicacionesService.create(createPublicacionDto, req.user.sub, urlImagen);
   }
 
-  // GET /publicaciones?orden=fecha|meGusta&usuario=<id>&offset=0&limit=10
+  // GET /publicaciones?orden=fecha|meGusta&direccion=desc|asc&usuario=<id>&offset=0&limit=10
   // Todos los parámetros son opcionales; si no vienen se usan los valores por defecto
   @Get()
   findAll(
     @Query('orden', new DefaultValuePipe('fecha')) orden: string,
+    @Query('direccion', new DefaultValuePipe('desc')) direccion: string,
     @Query('usuario') usuario: string | undefined,
     @Query('offset', new DefaultValuePipe(0), ParseIntPipe) offset: number,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
   ) {
-    return this.publicacionesService.findAll(orden, usuario, offset, limit);
+    return this.publicacionesService.findAll(orden, direccion, usuario, offset, limit);
   }
 
   // DELETE /publicaciones/:id  → baja lógica (sólo el autor)

@@ -1,5 +1,5 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
-import { PublicacionesService, Orden } from '../servicios/publicaciones';
+import { PublicacionesService, Orden, Direccion } from '../servicios/publicaciones';
 import { Publicacion as PublicacionModelo } from '../modelos/publicacion';
 import { Publicacion } from '../publicacion/publicacion';
 import { NuevaPublicacion } from '../nueva-publicacion/nueva-publicacion';
@@ -21,6 +21,7 @@ export class Publicaciones implements OnInit {
 
   // Ordenamiento y paginación
   protected orden = signal<Orden>('fecha');
+  protected direccion = signal<Direccion>('desc'); // desc = mayor a menor
   protected pagina = signal(0); // empieza en 0
   protected total = signal(0);
   protected totalPaginas = computed(() => Math.max(1, Math.ceil(this.total() / POR_PAGINA)));
@@ -38,7 +39,7 @@ export class Publicaciones implements OnInit {
     this.error.set(null);
     const offset = this.pagina() * POR_PAGINA;
 
-    this.publicacionesService.listar(this.orden(), offset, POR_PAGINA).subscribe({
+    this.publicacionesService.listar(this.orden(), offset, POR_PAGINA, undefined, this.direccion()).subscribe({
       next: (respuesta) => {
         this.publicaciones.set(respuesta.publicaciones);
         this.total.set(respuesta.total);
@@ -57,6 +58,13 @@ export class Publicaciones implements OnInit {
     this.cargar();
   }
 
+  // Invierte el sentido: descendente <-> ascendente
+  protected invertirDireccion() {
+    this.direccion.update((d) => (d === 'desc' ? 'asc' : 'desc'));
+    this.pagina.set(0);
+    this.cargar();
+  }
+
   protected irAPagina(pagina: number) {
     this.pagina.set(pagina);
     this.cargar();
@@ -67,6 +75,7 @@ export class Publicaciones implements OnInit {
   protected alCrear() {
     this.mostrarFormulario.set(false);
     this.orden.set('fecha');
+    this.direccion.set('desc');
     this.pagina.set(0);
     this.cargar();
   }

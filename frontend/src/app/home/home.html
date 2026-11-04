@@ -1,9 +1,7 @@
-<section class="home">
-  @if (auth.usuarioActual(); as usuario) {
+<!-- Sólo se llega logueado: sin sesión, el authGuard manda al login -->
+@if (auth.usuarioActual(); as usuario) {
+  <section class="home">
     <h1>Hola, {{ usuario.nombre }}!</h1>
     <app-publicaciones />
-  } @else {
-    <h1>Bienvenido a Red Social</h1>
-    <p><a routerLink="/login">Iniciá sesión</a> o <a routerLink="/registro">creá una cuenta</a>.</p>
-  }
-</section>
+  </section>
+}

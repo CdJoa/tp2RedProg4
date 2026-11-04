@@ -76,6 +76,19 @@ export class Auth {
       );
   }
 
+  // PATCH /usuarios/foto: sube una foto de perfil nueva (requiere token).
+  // Actualiza el usuario guardado para que se vea al instante en toda la app.
+  cambiarFoto(imagen: File): Observable<Usuario> {
+    const formData = new FormData();
+    formData.append('imagenPerfil', imagen);
+    return this.http.patch<Usuario>(`${this.apiUrl}/usuarios/foto`, formData).pipe(
+      tap((usuario) => {
+        globalThis.localStorage?.setItem('usuario', JSON.stringify(usuario));
+        this.usuarioActual.set(usuario);
+      }),
+    );
+  }
+
   logout() {
     clearTimeout(this.temporizador);
     globalThis.localStorage?.removeItem('token');

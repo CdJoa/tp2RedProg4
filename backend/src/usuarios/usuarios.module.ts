@@ -4,10 +4,12 @@ import { PasswordHasher } from '@nestjs/authentication';
 import { UsuariosService } from './usuarios.service.js';
 import { UsuariosController } from './usuarios.controller.js';
 import { Usuario, UsuarioSchema } from './entities/usuario.entity.js';
+import { ArchivosModule } from '../archivos/archivos.module.js';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Usuario.name, schema: UsuarioSchema }]),
+    ArchivosModule, // FileService para subir la foto de perfil
   ],
   controllers: [UsuariosController],
   providers: [

@@ -1,0 +1,8 @@
+test2@mail.com
+Clave123
+
+carnelosjoaquin@gmail.com
+Joaco123
+
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2YWViM2VjZjk4N2E1YjYzNzA2MjJlMDkiLCJlbWFpbCI6InRlc3QyQG1haWwuY29tIiwibm9tYnJlVXN1YXJpbyI6InRlc3QyIiwicGVyZmlsIjoidXN1YXJpbyIsImlhdCI6MTc5MzgwMTkzNSwiZXhwIjoxNzkzODAxOTQ1fQ.QrDdO8-ndn6JgZhD00EkEq5HmThOZDomCzba3a04DWs"

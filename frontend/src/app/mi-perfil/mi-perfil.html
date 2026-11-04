@@ -2,16 +2,28 @@
 @if (auth.usuarioActual(); as usuario) {
   <section class="perfil">
     <div class="encabezado">
-      @if (usuario.imagenPerfil) {
-        <img class="foto" [src]="usuario.imagenPerfil" alt="Foto de perfil" />
-      }
+      <!-- Al hacer clic se abre el selector de archivos (el input está oculto
+           dentro del label). Al pasar el mouse aparece "Cambiar foto". -->
+      <label class="foto-editable" [class.subiendo]="subiendoFoto()" title="Cambiar foto de perfil">
+        <!-- Sin foto, o si la imagen no carga: cuadradito "404" -->
+        @if (usuario.imagenPerfil && !fotoFallo()) {
+          <img class="foto" [src]="usuario.imagenPerfil" alt="Foto de perfil" (error)="fotoFallo.set(true)" />
+        } @else {
+          <div class="foto sin-foto">404</div>
+        }
+        <span class="cambiar">{{ subiendoFoto() ? 'Subiendo...' : 'Cambiar foto' }}</span>
+        <input type="file" accept="image/*" hidden [disabled]="subiendoFoto()" (change)="cambiarFoto($event)" />
+      </label>
       <div>
         <h1>{{ usuario.nombre }} {{ usuario.apellido }}</h1>
         <p class="usuario">&#64;{{ usuario.nombreUsuario }}</p>
+        @if (errorFoto(); as error) {
+          <small class="error">{{ error }}</small>
+        }
       </div>
     </div>
 
-    <div class="tarjeta">
+    <div class="datos">
       <p><strong>Email:</strong> {{ usuario.email }}</p>
       <p><strong>Fecha de nacimiento:</strong> {{ usuario.fechaNacimiento | date: 'dd/MM/yyyy' : 'UTC' }}</p>
       <p><strong>Descripción:</strong> {{ usuario.descripcion || '-' }}</p>

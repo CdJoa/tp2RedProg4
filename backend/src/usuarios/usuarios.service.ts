@@ -55,6 +55,11 @@ export class UsuariosService {
     await this.UsuarioModel.updateOne({ _id: id }, { password: passwordHash }).exec();
   }
 
+  // Cambia la foto de perfil y devuelve el usuario actualizado (sin password)
+  async updateImagenPerfil(id: string, imagenPerfil: string) {
+    return this.UsuarioModel.findByIdAndUpdate(id, { imagenPerfil }, { new: true }).exec();
+  }
+
   async findById(id: string) {
     return this.UsuarioModel.findById(id).exec();
   }

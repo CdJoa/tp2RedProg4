@@ -4,39 +4,113 @@
   padding: 0 1rem;
 }
 
+/* Encabezado: panel de vidrio con la foto y el nombre */
 .encabezado {
   display: flex;
   align-items: center;
   gap: 1rem;
   margin-bottom: 1rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgb(255 255 255 / 0.7);
+  border-radius: 8px;
+  background: linear-gradient(to bottom, rgb(255 255 255 / 0.85), rgb(230 241 251 / 0.75) 50%, rgb(205 225 245 / 0.75) 51%, rgb(225 238 250 / 0.85));
+  box-shadow: 0 8px 22px rgb(0 30 70 / 0.35);
+  backdrop-filter: blur(4px);
 }
 
 .encabezado h1 {
   margin: 0;
+  font-size: 1.5rem;
+  color: #0b3c6e;
 }
 
 .usuario {
-  margin: 0.25rem 0 0;
-  color: #64748b;
+  margin: 0.15rem 0 0;
+  color: #4f6478;
 }
 
+.foto-editable {
+  position: relative;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+/* "Foto para mostrar": cuadrada con marco blanco */
 .foto {
   width: 96px;
   height: 96px;
-  border-radius: 50%;
+  border-radius: 6px;
   object-fit: cover;
+  border: 3px solid white;
+  box-shadow: 0 0 0 1px #7a9ec7, 0 3px 8px rgb(0 40 90 / 0.4);
 }
 
-.tarjeta {
-  background: white;
+/* Texto que aparece encima de la foto al pasar el mouse */
+.cambiar {
+  position: absolute;
+  inset: 3px; /* deja ver el marco blanco */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 4px;
+  background: linear-gradient(to bottom, rgb(30 110 190 / 0.75), rgb(10 60 120 / 0.85));
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.6);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.foto-editable:hover .cambiar,
+.foto-editable.subiendo .cambiar {
+  opacity: 1;
+}
+
+.foto-editable:hover .foto {
+  box-shadow: 0 0 0 1px #3c7fb1, 0 0 12px rgb(80 180 255 / 0.9);
+}
+
+.foto-editable.subiendo {
+  cursor: wait;
+}
+
+/* Datos personales en una "ventana" con barra de título */
+.datos {
+  padding: 0 1.25rem 0.75rem;
+  background: #fdfeff;
+  border: 1px solid #5b8fc7;
   border-radius: 8px;
-  padding: 1rem 1.5rem;
-  box-shadow: 0 4px 16px rgb(15 23 42 / 0.08);
+  box-shadow: 0 8px 22px rgb(0 30 70 / 0.35);
 }
 
+.datos::before {
+  content: 'Datos personales';
+  display: block;
+  margin: 0 -1.25rem 0.5rem;
+  padding: 0.45rem 0.9rem;
+  color: white;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgb(0 40 90 / 0.7);
+  background: linear-gradient(to bottom, #9fd2f7 0%, #64b1ec 45%, #2f8bd9 50%, #4aa2e6 100%);
+  border-bottom: 1px solid #0b3c6e;
+}
+
+.datos p {
+  margin: 0.4rem 0;
+}
+
+.datos strong {
+  color: #0b3c6e;
+}
+
+/* Título sobre el fondo azul */
 h2 {
   margin: 2rem 0 1rem;
-  font-size: 1.25rem;
+  font-size: 1.3rem;
+  color: white;
+  text-shadow: 0 1px 3px rgb(0 30 70 / 0.8);
 }
 
 .mis-publicaciones {
@@ -46,5 +120,6 @@ h2 {
 }
 
 .aviso {
-  color: #64748b;
+  color: white;
+  text-shadow: 0 1px 3px rgb(0 30 70 / 0.8);
 }

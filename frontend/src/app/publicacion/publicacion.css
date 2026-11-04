@@ -1,71 +1,117 @@
-.tarjeta {
-  background: white;
-  border-radius: 12px;
-  padding: 1rem 1.25rem;
-  box-shadow: 0 4px 16px rgb(15 23 42 / 0.08);
+/* Cada publicación es una "ventanita" */
+.publicacion {
+  background: #fdfeff;
+  border: 1px solid #5b8fc7;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.6) inset,
+    0 8px 22px rgb(0 30 70 / 0.35);
 }
 
-.tarjeta h2 {
-  margin: 0.75rem 0 0.25rem;
-  font-size: 1.15rem;
-}
-
-.tarjeta p {
-  margin: 0 0 0.75rem;
-  white-space: pre-line;
-}
-
+/* El autor va en la "barra de título" brillante */
 .autor {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  padding: 0.45rem 0.75rem;
+  color: white;
+  text-shadow: 0 1px 2px rgb(0 40 90 / 0.7);
+  background: linear-gradient(to bottom, #9fd2f7 0%, #64b1ec 45%, #2f8bd9 50%, #4aa2e6 100%);
+  border-bottom: 1px solid #0b3c6e;
 }
 
 .autor div {
   display: flex;
   flex-direction: column;
+  line-height: 1.2;
 }
 
+/* Foto del autor con marco blanco ("foto para mostrar") */
 .avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  border-radius: 5px;
   object-fit: cover;
+  border: 2px solid white;
+  box-shadow: 0 0 0 1px rgb(0 50 110 / 0.5), 0 1px 4px rgb(0 30 70 / 0.5);
+}
+
+.autor .detalle {
+  color: #e3f2ff;
+}
+
+.publicacion h2 {
+  margin: 0.75rem 1rem 0.25rem;
+  font-size: 1.05rem;
+  color: #0b3c6e;
+}
+
+.publicacion p {
+  margin: 0 1rem 0.75rem;
+  white-space: pre-line;
 }
 
 .imagen {
-  width: 100%;
+  display: block;
+  width: calc(100% - 2rem);
   max-height: 480px;
+  margin: 0 1rem 0.75rem;
   object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 0.5rem;
+  border: 1px solid #b9d2ea;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgb(0 30 70 / 0.2);
 }
 
 .detalle {
-  color: #64748b;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
 }
 
+/* Barra de abajo, gris clarito como la de las ventanas */
 .acciones {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0.45rem 0.75rem;
+  background: linear-gradient(to bottom, #f4f8fc, #dfe9f4);
+  border-top: 1px solid #c3d6ea;
 }
 
+/* Botones con brillo */
 .acciones button {
-  border: 1px solid #cbd5e1;
-  background: white;
-  border-radius: 999px;
-  padding: 0.3rem 0.9rem;
+  padding: 0.25rem 0.85rem;
+  border: 1px solid #7a9ec7;
+  border-radius: 3px;
+  background: linear-gradient(to bottom, #ffffff 0%, #eef5fc 48%, #d9e8f7 50%, #e9f3fd 100%);
+  font: inherit;
   cursor: pointer;
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.8) inset;
 }
 
+.acciones button:hover:not(:disabled) {
+  border-color: #3c7fb1;
+  background: linear-gradient(to bottom, #f2faff 0%, #d8f0fd 48%, #b7e1fb 50%, #cfeafd 100%);
+  box-shadow: 0 0 6px rgb(80 170 240 / 0.6);
+}
+
+/* Me gusta ya dado: botón rosa brillante */
 .me-gusta.activo {
-  color: #e11d48;
-  border-color: #fda4af;
-  background: #fff1f2;
+  color: #b0124d;
+  border-color: #d9578a;
+  background: linear-gradient(to bottom, #ffe9f1 0%, #ffc9dc 48%, #ffaccb 50%, #ffc4da 100%);
 }
 
-.eliminar {
-  color: #b91c1c;
+.me-gusta:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.acciones .eliminar {
+  color: #c42b1c;
+}
+
+.acciones .eliminar:hover {
+  border-color: #c42b1c !important;
+  background: linear-gradient(to bottom, #fff0ee 0%, #ffd6d0 48%, #ffbfb6 50%, #ffd2cb 100%) !important;
+  box-shadow: 0 0 6px rgb(230 80 60 / 0.6) !important;
 }

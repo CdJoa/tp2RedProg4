@@ -3,7 +3,7 @@ import { CanActivateFn, Router } from '@angular/router';
 import { Auth } from '../servicios/auth';
 
 // Rutas que se pueden ver sin estar logueado
-const RUTAS_PUBLICAS = ['/home', '/login', '/registro'];
+const RUTAS_PUBLICAS = ['/login', '/registro'];
 
 export const authGuard: CanActivateFn = (_route, state) => {
   const authService = inject(Auth);
@@ -26,6 +26,10 @@ export const authGuard: CanActivateFn = (_route, state) => {
     return true;
   }
 
-  // Al login, recordando a dónde quería ir
+  // Al login. Si quería ir a otra página que no sea la home, se recuerda
+  // para volver ahí después de loguearse.
+  if (state.url.startsWith('/home')) {
+    return router.createUrlTree(['/login']);
+  }
   return router.createUrlTree(['/login'], { queryParams: { returnUrl: state.url } });
 };

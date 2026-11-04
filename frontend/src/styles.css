@@ -1,42 +1,98 @@
-/* Estilos globales */
+/* =========================================================
+   Estilos globales — look "Aero" de la época de Windows Vista
+   (vidrio, brillos, degradés azules, ventanas con barra de título)
+   ========================================================= */
+
+:root {
+  /* Paleta */
+  --azul-oscuro: #0b3c6e;
+  --azul: #1f6fb8;
+  --azul-claro: #6db3ec;
+  --celeste: #d6ecfb;
+  --borde-ventana: #5b8fc7;
+  --borde-control: #7a9ec7;
+  --texto: #1b2a3a;
+  --texto-suave: #4f6478;
+  --rojo: #c42b1c;
+
+  /* Barra de título de ventana: brillo arriba, azul abajo */
+  --brillo-titulo: linear-gradient(
+    to bottom,
+    #9fd2f7 0%,
+    #64b1ec 45%,
+    #2f8bd9 50%,
+    #4aa2e6 100%
+  );
+
+  /* Botón común: blanco/celeste con reflejo en la mitad */
+  --brillo-boton: linear-gradient(to bottom, #ffffff 0%, #eef5fc 48%, #d9e8f7 50%, #e9f3fd 100%);
+  --brillo-boton-hover: linear-gradient(to bottom, #f2faff 0%, #d8f0fd 48%, #b7e1fb 50%, #cfeafd 100%);
+
+  /* Botón principal: azul brillante */
+  --brillo-principal: linear-gradient(to bottom, #8fd0fa 0%, #45a3e8 48%, #1d7fd2 50%, #3d9ae4 100%);
+}
+
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  background: #f1f5f9;
-  color: #0f172a;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+  font-size: 14px;
+  color: var(--texto);
+  /* Cielo de Vista: degradé azul + "rayos" de luz difusos */
+  background:
+    radial-gradient(ellipse 60% 40% at 15% 0%, rgb(255 255 255 / 0.45), transparent 70%),
+    radial-gradient(ellipse 50% 35% at 85% 10%, rgb(160 230 255 / 0.4), transparent 70%),
+    linear-gradient(160deg, transparent 40%, rgb(255 255 255 / 0.18) 50%, transparent 60%),
+    linear-gradient(to bottom, #1a5c9e 0%, #3f8fd4 35%, #8cc7f0 75%, #d4ecfb 100%);
+  background-attachment: fixed;
 }
 
-/* ---------- Formularios (login / registro) ---------- */
+a {
+  color: var(--azul);
+}
+
+/* ---------- Ventanas (login / registro / tarjetas) ---------- */
 .contenedor {
   display: flex;
   justify-content: center;
   padding: 2rem 1rem;
 }
 
+/* Una "ventana": borde azul, esquinas redondeadas y sombra */
 .tarjeta {
   width: 100%;
   max-width: 420px;
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgb(15 23 42 / 0.08);
+  background: #fdfeff;
+  padding: 0 1.5rem 1.5rem;
+  border: 1px solid var(--borde-ventana);
+  border-radius: 8px;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.6) inset,
+    0 10px 30px rgb(0 30 70 / 0.45);
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  overflow: hidden;
 }
 
 .tarjeta.ancha {
   max-width: 640px;
 }
 
+/* El h1 de la ventana se convierte en su barra de título */
 .tarjeta h1 {
-  margin: 0 0 0.5rem;
-  font-size: 1.5rem;
-  text-align: center;
+  margin: 0 -1.5rem 0.25rem;
+  padding: 0.55rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  text-shadow: 0 1px 2px rgb(0 40 90 / 0.7);
+  background: var(--brillo-titulo);
+  border-bottom: 1px solid var(--azul-oscuro);
 }
 
 .fila {
@@ -51,6 +107,7 @@ body {
   }
 }
 
+/* ---------- Campos de formulario ---------- */
 .campo {
   display: flex;
   flex-direction: column;
@@ -59,21 +116,26 @@ body {
 
 .campo label {
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  color: var(--azul-oscuro);
 }
 
 .campo .opcional {
   font-weight: 400;
-  color: #64748b;
+  color: var(--texto-suave);
 }
 
+/* Inputs con el borde "hundido" de la época */
 .campo input,
 .campo textarea {
   width: 100%;
-  padding: 0.6rem 0.75rem;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
+  padding: 0.4rem 0.55rem;
+  border: 1px solid #abadb3;
+  border-top-color: #8e9196;
+  border-radius: 2px;
+  background: linear-gradient(to bottom, #f5f7fa 0%, #ffffff 30%);
   font: inherit;
+  color: var(--texto);
 }
 
 .campo textarea {
@@ -81,21 +143,27 @@ body {
   min-height: 80px;
 }
 
+.campo input:hover,
+.campo textarea:hover {
+  border-color: #5794bf;
+}
+
 .campo input:focus,
 .campo textarea:focus {
   outline: none;
-  border-color: #38bdf8;
-  box-shadow: 0 0 0 3px rgb(56 189 248 / 0.25);
+  border-color: #3d7bad;
+  box-shadow: 0 0 0 2px rgb(61 151 222 / 0.35), 0 0 6px rgb(61 151 222 / 0.5);
 }
 
 .campo .invalido {
-  border-color: #dc2626;
+  border-color: var(--rojo);
+  background: #fff6f5;
 }
 
 .campo .contador {
   align-self: flex-end;
-  font-size: 0.8rem;
-  color: #64748b;
+  font-size: 0.75rem;
+  color: var(--texto-suave);
 }
 
 .con-boton {
@@ -103,55 +171,113 @@ body {
   gap: 0.5rem;
 }
 
-.ver {
-  padding: 0 0.75rem;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  background: #f8fafc;
+/* ---------- Botones con brillo ---------- */
+.ver,
+.boton {
+  padding: 0.3rem 0.8rem;
+  border: 1px solid var(--borde-control);
+  border-radius: 3px;
+  background: var(--brillo-boton);
+  color: var(--texto);
+  font: inherit;
   cursor: pointer;
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.8) inset;
 }
 
-.error {
-  color: #dc2626;
-  font-size: 0.8rem;
-}
-
-.error-servidor {
-  margin: 0;
-  padding: 0.6rem 0.75rem;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  border-radius: 8px;
-  color: #b91c1c;
-  font-size: 0.9rem;
+.ver:hover,
+.boton:hover {
+  border-color: #3c7fb1;
+  background: var(--brillo-boton-hover);
 }
 
 .principal {
-  padding: 0.7rem;
-  border: none;
-  border-radius: 8px;
-  background: #0ea5e9;
+  padding: 0.55rem;
+  border: 1px solid #165a96;
+  border-radius: 4px;
+  background: var(--brillo-principal);
   color: white;
-  font-weight: 600;
+  font: inherit;
+  font-weight: 700;
   font-size: 1rem;
+  text-shadow: 0 1px 2px rgb(0 40 90 / 0.6);
   cursor: pointer;
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.6) inset,
+    0 2px 6px rgb(0 60 130 / 0.35);
+}
+
+.principal:hover {
+  filter: brightness(1.08) saturate(1.1);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.6) inset,
+    0 0 10px rgb(80 180 255 / 0.8);
 }
 
 .principal:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  filter: grayscale(0.4);
+}
+
+/* ---------- Mensajes ---------- */
+.error {
+  color: var(--rojo);
+  font-size: 0.8rem;
+}
+
+/* Cartel de error tipo "globito" de aviso */
+.error-servidor {
+  margin: 0;
+  padding: 0.5rem 0.75rem 0.5rem 2rem;
+  position: relative;
+  background: linear-gradient(to bottom, #fff9e5, #ffefc2);
+  border: 1px solid #e0b84f;
+  border-radius: 4px;
+  color: #6b4a00;
+  font-size: 0.85rem;
+}
+
+.error-servidor::before {
+  content: '!';
+  position: absolute;
+  left: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: linear-gradient(to bottom, #ffd75e, #f2a900);
+  color: #5a3c00;
+  font-weight: 800;
+  font-size: 0.7rem;
+  line-height: 1rem;
+  text-align: center;
 }
 
 .pie {
   margin: 0;
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
+/* ---------- Fotos de perfil ("foto para mostrar" con marco) ---------- */
 .preview {
   width: 96px;
   height: 96px;
-  border-radius: 50%;
+  border-radius: 6px;
   object-fit: cover;
-  border: 2px solid #e2e8f0;
+  border: 3px solid white;
+  box-shadow: 0 0 0 1px var(--borde-control), 0 2px 6px rgb(0 40 90 / 0.35);
+}
+
+/* Lugar de la foto de perfil cuando no hay una (o no carga) */
+.sin-foto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #e8f2fb, #c3dcf2);
+  color: #5b7fa6;
+  font-weight: 700;
+  font-size: 0.8rem;
 }
