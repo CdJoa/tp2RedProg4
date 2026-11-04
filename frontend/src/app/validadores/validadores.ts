@@ -23,12 +23,20 @@ export function camposIguales(campo: string, confirmacion: string): ValidatorFn 
   };
 }
 
-// La fecha no puede ser futura y la persona debe tener al menos `edadMinima` años.
-export function edadMinima(edadMinima: number): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    if (!control.value) return null;
-    const fecha = new Date(control.value);
-    if (isNaN(fecha.getTime())) return { fechaInvalida: true };
+// Validador de grupo para la fecha armada con tres selects (dia, mes, anio).
+// La fecha tiene que existir (no 31/02), no puede ser futura
+// y la persona debe tener al menos `edadMinima` años.
+export function fechaNacimientoValida(edadMinima: number): ValidatorFn {
+  return (grupo: AbstractControl): ValidationErrors | null => {
+    const dia = Number(grupo.get('dia')?.value);
+    const mes = Number(grupo.get('mes')?.value);
+    const anio = Number(grupo.get('anio')?.value);
+    if (!dia || !mes || !anio) return { fechaIncompleta: true };
+
+    // new Date "corre" las fechas imposibles (31/02 -> 03/03), así las detectamos
+    const fecha = new Date(anio, mes - 1, dia);
+    if (fecha.getDate() !== dia || fecha.getMonth() !== mes - 1) return { fechaInvalida: true };
+
     const hoy = new Date();
     if (fecha > hoy) return { fechaFutura: true };
     const limite = new Date(hoy.getFullYear() - edadMinima, hoy.getMonth(), hoy.getDate());

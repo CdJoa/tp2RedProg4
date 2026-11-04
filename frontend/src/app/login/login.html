@@ -35,20 +35,7 @@
         </button>
       </div>
       @if (mostrarError('password')) {
-        @let errores = form.controls.password.errors;
-        @if (errores?.['required']) {
-          <small class="error">Debe ingresar la contraseña</small>
-        } @else {
-          @if (errores?.['minlength']) {
-            <small class="error">Debe tener al menos 8 caracteres</small>
-          }
-          @if (errores?.['sinMayuscula']) {
-            <small class="error">Debe tener al menos una mayúscula</small>
-          }
-          @if (errores?.['sinNumero']) {
-            <small class="error">Debe tener al menos un número</small>
-          }
-        }
+        <small class="error">Debe ingresar la contraseña</small>
       }
     </div>
 

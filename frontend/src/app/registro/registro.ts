@@ -6,7 +6,7 @@ import { Auth } from '../servicios/auth';
 import {
   archivoImagen,
   camposIguales,
-  edadMinima,
+  fechaNacimientoValida,
   mensajeDeError,
   passwordFuerte,
   sinEspaciosVacios,
@@ -25,6 +25,14 @@ export class Registro {
 
   protected readonly maxDescripcion = 200;
   protected readonly maxImagenMB = 5;
+
+  // Opciones de los selects de fecha
+  protected readonly dias = Array.from({ length: 31 }, (_, i) => i + 1);
+  protected readonly meses = [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
+  ];
+  protected readonly anios = Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i);
 
   protected enviando = signal(false);
   protected errorServidor = signal<string | null>(null);
@@ -47,7 +55,10 @@ export class Registro {
       ],
       password: ['', [Validators.required, Validators.minLength(8), passwordFuerte()]],
       repetirPassword: ['', [Validators.required]],
-      fechaNacimiento: ['', [Validators.required, edadMinima(13)]],
+      fechaNacimiento: this.fb.group(
+        { dia: [''], mes: [''], anio: [''] },
+        { validators: fechaNacimientoValida(13) },
+      ),
       descripcion: ['', [Validators.maxLength(this.maxDescripcion)]],
       imagenPerfil: [null as File | null, [archivoImagen(this.maxImagenMB)]],
     },
@@ -65,6 +76,19 @@ export class Registro {
 
   protected mostrarError(control: AbstractControl): boolean {
     return control.invalid && (control.touched || control.dirty);
+  }
+
+  // El error de fecha aparece recién cuando se tocaron los tres selects (o al enviar)
+  protected mostrarErrorFecha(): boolean {
+    const f = this.c.fechaNacimiento;
+    const tocados = Object.values(f.controls).every((c) => c.touched);
+    return f.invalid && tocados;
+  }
+
+  // El back espera la fecha como 'YYYY-MM-DD'
+  private fechaIso(): string {
+    const { dia, mes, anio } = this.c.fechaNacimiento.getRawValue();
+    return `${anio}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
   }
 
   protected passwordsNoCoinciden(): boolean {
@@ -111,7 +135,7 @@ export class Registro {
         email: v.email!.trim(),
         nombreUsuario: v.nombreUsuario!.trim(),
         password: v.password!,
-        fechaNacimiento: v.fechaNacimiento!,
+        fechaNacimiento: this.fechaIso(),
         descripcion: v.descripcion?.trim() || undefined,
         imagenPerfil: v.imagenPerfil,
       })

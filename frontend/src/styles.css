@@ -127,6 +127,7 @@ a {
 
 /* Inputs con el borde "hundido" de la época */
 .campo input,
+.campo select,
 .campo textarea {
   width: 100%;
   padding: 0.4rem 0.55rem;
@@ -144,11 +145,13 @@ a {
 }
 
 .campo input:hover,
+.campo select:hover,
 .campo textarea:hover {
   border-color: #5794bf;
 }
 
 .campo input:focus,
+.campo select:focus,
 .campo textarea:focus {
   outline: none;
   border-color: #3d7bad;
@@ -158,6 +161,12 @@ a {
 .campo .invalido {
   border-color: var(--rojo);
   background: #fff6f5;
+}
+
+.campo .fecha {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1.3fr;
+  gap: 0.5rem;
 }
 
 .campo .contador {

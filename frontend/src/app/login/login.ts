@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Auth } from '../servicios/auth';
-import { mensajeDeError, passwordFuerte, sinEspaciosVacios } from '../validadores/validadores';
+import { mensajeDeError, sinEspaciosVacios } from '../validadores/validadores';
 
 @Component({
   imports: [ReactiveFormsModule, RouterLink],
@@ -25,7 +25,7 @@ export class Login {
 
   protected form = this.fb.nonNullable.group({
     identificador: ['', [Validators.required, sinEspaciosVacios()]],
-    password: ['', [Validators.required, Validators.minLength(8), passwordFuerte()]],
+    password: ['', Validators.required],
   });
 
   // Muestra errores sólo después de que el usuario tocó el campo (o intentó enviar)

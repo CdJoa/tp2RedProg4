@@ -105,19 +105,38 @@
     </div>
 
     <div class="campo">
-      <label for="fechaNacimiento">Fecha de nacimiento</label>
-      <input id="fechaNacimiento" type="date" formControlName="fechaNacimiento" autocomplete="bday"
-             [class.invalido]="mostrarError(c.fechaNacimiento)" />
-      @if (mostrarError(c.fechaNacimiento)) {
+      <label for="fechaDia">Fecha de nacimiento</label>
+      <div class="fecha" formGroupName="fechaNacimiento">
+        <select id="fechaDia" formControlName="dia" aria-label="Día"
+                [class.invalido]="mostrarErrorFecha()">
+          <option value="" disabled>Día</option>
+          @for (d of dias; track d) {
+            <option [value]="d">{{ d }}</option>
+          }
+        </select>
+        <select formControlName="mes" aria-label="Mes" [class.invalido]="mostrarErrorFecha()">
+          <option value="" disabled>Mes</option>
+          @for (m of meses; track m; let i = $index) {
+            <option [value]="i + 1">{{ m }}</option>
+          }
+        </select>
+        <select formControlName="anio" aria-label="Año" [class.invalido]="mostrarErrorFecha()">
+          <option value="" disabled>Año</option>
+          @for (a of anios; track a) {
+            <option [value]="a">{{ a }}</option>
+          }
+        </select>
+      </div>
+      @if (mostrarErrorFecha()) {
         @let e = c.fechaNacimiento.errors;
-        @if (e?.['required']) {
-          <small class="error">La fecha de nacimiento es obligatoria</small>
+        @if (e?.['fechaIncompleta']) {
+          <small class="error">Completá día, mes y año</small>
+        } @else if (e?.['fechaInvalida']) {
+          <small class="error">Esa fecha no existe</small>
         } @else if (e?.['fechaFutura']) {
           <small class="error">La fecha no puede ser futura</small>
         } @else if (e?.['edadMinima']) {
           <small class="error">Debés tener al menos {{ e?.['edadMinima'].requerida }} años</small>
-        } @else {
-          <small class="error">La fecha no es válida</small>
         }
       }
     </div>
