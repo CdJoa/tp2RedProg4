@@ -1,8 +1,9 @@
 import { Service, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of, switchMap } from 'rxjs';
 import { PaginaPublicaciones } from '../modelos/publicacion';
 import { environment } from '../../environments/environment';
+import { prepararImagen } from '../validadores/preparar-imagen';
 
 export type Orden = 'fecha' | 'meGusta';
 export type Direccion = 'desc' | 'asc';
@@ -34,14 +35,20 @@ export class PublicacionesService {
   // Las que siguen necesitan token: lo agrega el tokenInterceptor
 
   // POST /publicaciones espera multipart/form-data (titulo, descripcion + archivo "imagen")
-  crear(titulo: string, descripcion: string, imagen: File | null) {
-    const formData = new FormData();
-    formData.append('titulo', titulo);
-    formData.append('descripcion', descripcion);
-    if (imagen) {
-      formData.append('imagen', imagen);
-    }
-    return this.http.post(this.apiUrl, formData);
+  // Si hay imagen, primero se achica (ver prepararImagen)
+  crear(titulo: string, descripcion: string, archivo: File | null) {
+    const imagen$: Observable<File | null> = archivo ? prepararImagen(archivo) : of(null);
+    return imagen$.pipe(
+      switchMap((imagen) => {
+        const formData = new FormData();
+        formData.append('titulo', titulo);
+        formData.append('descripcion', descripcion);
+        if (imagen) {
+          formData.append('imagen', imagen);
+        }
+        return this.http.post(this.apiUrl, formData);
+      }),
+    );
   }
 
   darMeGusta(id: string) {

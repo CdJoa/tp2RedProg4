@@ -1,9 +1,10 @@
 import { Service, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, tap } from 'rxjs';
+import { Observable, of, switchMap, tap } from 'rxjs';
 import { Usuario } from '../modelos/usuario';
 import { environment } from '../../environments/environment';
+import { prepararImagen } from '../validadores/preparar-imagen';
 
 export interface RegistroDatos {
   nombre: string;
@@ -42,22 +43,28 @@ export class Auth {
     }
   }
 
-  // POST /auth/registro espera multipart/form-data (datos + archivo "imagenPerfil")
+  // POST /auth/registro espera multipart/form-data (datos + archivo "imagenPerfil").
+  // Si hay foto, primero se achica (ver prepararImagen).
   registrar(datos: RegistroDatos): Observable<Usuario> {
-    const formData = new FormData();
-    formData.append('nombre', datos.nombre);
-    formData.append('apellido', datos.apellido);
-    formData.append('email', datos.email);
-    formData.append('nombreUsuario', datos.nombreUsuario);
-    formData.append('password', datos.password);
-    formData.append('fechaNacimiento', datos.fechaNacimiento);
-    if (datos.descripcion) {
-      formData.append('descripcion', datos.descripcion);
-    }
-    if (datos.imagenPerfil) {
-      formData.append('imagenPerfil', datos.imagenPerfil);
-    }
-    return this.http.post<Usuario>(`${this.apiUrl}/auth/registro`, formData);
+    const imagen$: Observable<File | null> = datos.imagenPerfil ? prepararImagen(datos.imagenPerfil) : of(null);
+    return imagen$.pipe(
+      switchMap((imagen) => {
+        const formData = new FormData();
+        formData.append('nombre', datos.nombre);
+        formData.append('apellido', datos.apellido);
+        formData.append('email', datos.email);
+        formData.append('nombreUsuario', datos.nombreUsuario);
+        formData.append('password', datos.password);
+        formData.append('fechaNacimiento', datos.fechaNacimiento);
+        if (datos.descripcion) {
+          formData.append('descripcion', datos.descripcion);
+        }
+        if (imagen) {
+          formData.append('imagenPerfil', imagen);
+        }
+        return this.http.post<Usuario>(`${this.apiUrl}/auth/registro`, formData);
+      }),
+    );
   }
 
   // El back responde { access_token, usuario }: se guardan los dos.
@@ -78,10 +85,13 @@ export class Auth {
 
   // PATCH /usuarios/foto: sube una foto de perfil nueva (requiere token).
   // Actualiza el usuario guardado para que se vea al instante en toda la app.
-  cambiarFoto(imagen: File): Observable<Usuario> {
-    const formData = new FormData();
-    formData.append('imagenPerfil', imagen);
-    return this.http.patch<Usuario>(`${this.apiUrl}/usuarios/foto`, formData).pipe(
+  cambiarFoto(archivo: File): Observable<Usuario> {
+    return prepararImagen(archivo).pipe(
+      switchMap((imagen) => {
+        const formData = new FormData();
+        formData.append('imagenPerfil', imagen);
+        return this.http.patch<Usuario>(`${this.apiUrl}/usuarios/foto`, formData);
+      }),
       tap((usuario) => {
         globalThis.localStorage?.setItem('usuario', JSON.stringify(usuario));
         this.usuarioActual.set(usuario);
