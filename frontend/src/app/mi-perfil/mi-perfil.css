@@ -1,0 +1,35 @@
+.perfil {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.encabezado {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.encabezado h1 {
+  margin: 0;
+}
+
+.usuario {
+  margin: 0.25rem 0 0;
+  color: #64748b;
+}
+
+.foto {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.tarjeta {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 4px 16px rgb(15 23 42 / 0.08);
+}

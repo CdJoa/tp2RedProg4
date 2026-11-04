@@ -1,4 +1,4 @@
-// Producción (Vercel): reemplazar por la URL del backend desplegado
+// Producción (Vercel): URL del backend desplegado
 export const environment = {
-  apiUrl: 'https://TU-BACKEND.vercel.app',
+  apiUrl: 'https://backend-sandy-chi-84.vercel.app',
 };

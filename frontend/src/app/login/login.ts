@@ -1,9 +1,9 @@
 import { Component, inject, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { Auth } from '../../servicios/auth';
-import { mensajeDeError, passwordFuerte, sinEspaciosVacios } from '../../validadores/validadores';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Auth } from '../servicios/auth';
+import { mensajeDeError, passwordFuerte, sinEspaciosVacios } from '../validadores/validadores';
 
 @Component({
   imports: [ReactiveFormsModule, RouterLink],
@@ -15,6 +15,7 @@ export class Login {
   private fb = inject(FormBuilder);
   private auth = inject(Auth);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   protected enviando = signal(false);
   protected errorServidor = signal<string | null>(null);
@@ -44,7 +45,9 @@ export class Login {
     this.auth.login({ identificador: identificador.trim(), password }).subscribe({
       next: () => {
         this.enviando.set(false);
-        this.router.navigate(['/home']);
+        // Vuelve a la página que quería ver antes del login (la deja el authGuard)
+        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') ?? '/home';
+        this.router.navigateByUrl(returnUrl);
       },
       error: (err: HttpErrorResponse) => {
         this.enviando.set(false);

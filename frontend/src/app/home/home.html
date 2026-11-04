@@ -1,17 +1,9 @@
 <section class="home">
   @if (auth.usuarioActual(); as usuario) {
     <h1>Hola, {{ usuario.nombre }}!</h1>
-
-    <div class="tarjeta">
-      <p><strong>Nombre:</strong> {{ usuario.nombre }} {{ usuario.apellido }}</p>
-      <p><strong>Usuario:</strong> {{ usuario.nombreUsuario }}</p>
-      <p><strong>Email:</strong> {{ usuario.email }}</p>
-      <p><strong>Fecha de nacimiento:</strong> {{ usuario.fechaNacimiento | date: 'dd/MM/yyyy' : 'UTC' }}</p>
-      <p><strong>Descripción:</strong> {{ usuario.descripcion || '-' }}</p>
-      <p><strong>Perfil:</strong> {{ usuario.perfil }}</p>
-    </div>
+    <app-publicaciones />
   } @else {
-    <h1>No hay ningún usuario logueado</h1>
-    <a routerLink="/login">Ir al login</a>
+    <h1>Bienvenido a Red Social</h1>
+    <p><a routerLink="/login">Iniciá sesión</a> o <a routerLink="/registro">creá una cuenta</a>.</p>
   }
 </section>

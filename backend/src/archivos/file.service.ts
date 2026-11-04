@@ -14,13 +14,15 @@ export class FileService {
     });
   }
 
+  // carpeta: dónde se guarda en Cloudinary ('usuarios' o 'publicaciones')
   cloudinaryUploader(
-    file: Express.Multer.File
+    file: Express.Multer.File,
+    carpeta = 'usuarios',
   ): Promise<string> {
     return new Promise<string>((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
         {
-          folder: 'usuarios',
+          folder: carpeta,
           // Sin public_id: Cloudinary genera un nombre único, así dos
           // archivos con el mismo nombre no se pisan.
           resource_type: 'image',

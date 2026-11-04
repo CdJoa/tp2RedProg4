@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { Auth } from '../../servicios/auth';
+import { Auth } from '../servicios/auth';
+import { Publicaciones } from '../publicaciones/publicaciones';
 
 @Component({
-  imports: [DatePipe, RouterLink],
+  imports: [RouterLink, Publicaciones],
   selector: 'app-home',
   styleUrl: './home.css',
   templateUrl: './home.html',

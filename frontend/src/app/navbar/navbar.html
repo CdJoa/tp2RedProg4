@@ -2,8 +2,12 @@
   <a class="marca" routerLink="/home">Red Social</a>
 
   <div class="links">
-    <a routerLink="/login" routerLinkActive="activo">Login</a>
-    <a routerLink="/registro" routerLinkActive="activo">Registro</a>
+    @if (auth.usuarioActual()) {
+      <a routerLink="/mi-perfil" routerLinkActive="activo">Mi perfil</a>
+    } @else {
+      <a routerLink="/login" routerLinkActive="activo">Login</a>
+      <a routerLink="/registro" routerLinkActive="activo">Registro</a>
+    }
   </div>
 
   <div class="usuario">

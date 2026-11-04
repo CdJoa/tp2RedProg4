@@ -46,13 +46,17 @@ export class Auth {
     return this.http.post<Usuario>(`${this.apiUrl}/auth/registro`, formData);
   }
 
-  login(datos: LoginDatos): Observable<Usuario> {
-    return this.http.post<Usuario>(`${this.apiUrl}/auth/login`, datos).pipe(
-      tap((usuario) => {
-        globalThis.localStorage?.setItem('usuario', JSON.stringify(usuario));
-        this.usuarioActual.set(usuario);
-      }),
-    );
+  // El back responde { access_token, usuario }. Por ahora sólo se guarda el
+  // usuario; el token se usa en el sprint 3.
+  login(datos: LoginDatos): Observable<{ access_token: string; usuario: Usuario }> {
+    return this.http
+      .post<{ access_token: string; usuario: Usuario }>(`${this.apiUrl}/auth/login`, datos)
+      .pipe(
+        tap(({ usuario }) => {
+          globalThis.localStorage?.setItem('usuario', JSON.stringify(usuario));
+          this.usuarioActual.set(usuario);
+        }),
+      );
   }
 
   logout() {

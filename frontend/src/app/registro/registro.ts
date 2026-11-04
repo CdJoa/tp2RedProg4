@@ -2,7 +2,7 @@ import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { Auth } from '../../servicios/auth';
+import { Auth } from '../servicios/auth';
 import {
   archivoImagen,
   camposIguales,
@@ -10,7 +10,7 @@ import {
   mensajeDeError,
   passwordFuerte,
   sinEspaciosVacios,
-} from '../../validadores/validadores';
+} from '../validadores/validadores';
 
 @Component({
   imports: [ReactiveFormsModule, RouterLink],
