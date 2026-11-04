@@ -33,3 +33,18 @@
   padding: 1rem 1.5rem;
   box-shadow: 0 4px 16px rgb(15 23 42 / 0.08);
 }
+
+h2 {
+  margin: 2rem 0 1rem;
+  font-size: 1.25rem;
+}
+
+.mis-publicaciones {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.aviso {
+  color: #64748b;
+}

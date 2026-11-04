@@ -1,0 +1,45 @@
+<form class="nueva" [formGroup]="form" (ngSubmit)="enviar(inputImagen)" novalidate>
+  <div class="campo">
+    <label for="titulo">Título</label>
+    <input id="titulo" type="text" formControlName="titulo" [class.invalido]="mostrarError(c.titulo)" />
+    @if (mostrarError(c.titulo)) {
+      @if (c.titulo.errors?.['maxlength']) {
+        <small class="error">Máximo 100 caracteres</small>
+      } @else {
+        <small class="error">El título es obligatorio</small>
+      }
+    }
+  </div>
+
+  <div class="campo">
+    <label for="descripcion">Descripción</label>
+    <textarea id="descripcion" formControlName="descripcion" rows="3" [class.invalido]="mostrarError(c.descripcion)"></textarea>
+    @if (mostrarError(c.descripcion)) {
+      @if (c.descripcion.errors?.['maxlength']) {
+        <small class="error">Máximo 1000 caracteres</small>
+      } @else {
+        <small class="error">La descripción es obligatoria</small>
+      }
+    }
+  </div>
+
+  <div class="campo">
+    <label for="imagen">Imagen <span class="opcional">(opcional)</span></label>
+    <input #inputImagen id="imagen" type="file" accept="image/*" (change)="seleccionarImagen($event)" />
+    @if (mostrarError(c.imagen)) {
+      @if (c.imagen.errors?.['noEsImagen']) {
+        <small class="error">El archivo debe ser una imagen</small>
+      } @else if (c.imagen.errors?.['muyGrande']) {
+        <small class="error">La imagen no puede superar los 5 MB</small>
+      }
+    }
+  </div>
+
+  @if (errorServidor(); as error) {
+    <p class="error-servidor">{{ error }}</p>
+  }
+
+  <button type="submit" class="principal" [disabled]="enviando()">
+    {{ enviando() ? 'Publicando...' : 'Publicar' }}
+  </button>
+</form>

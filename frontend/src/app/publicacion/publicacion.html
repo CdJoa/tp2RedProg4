@@ -1,0 +1,28 @@
+<article class="tarjeta">
+  <header class="autor">
+    @if (publicacion().usuario.imagenPerfil) {
+      <img class="avatar" [src]="publicacion().usuario.imagenPerfil" alt="" />
+    }
+    <div>
+      <strong>{{ publicacion().usuario.nombre }} {{ publicacion().usuario.apellido }}</strong>
+      <span class="detalle">&#64;{{ publicacion().usuario.nombreUsuario }} · {{ publicacion().createdAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+    </div>
+  </header>
+
+  <h2>{{ publicacion().titulo }}</h2>
+  <p>{{ publicacion().descripcion }}</p>
+
+  @if (publicacion().imagen) {
+    <img class="imagen" [src]="publicacion().imagen" [alt]="publicacion().titulo" />
+  }
+
+  <footer class="acciones">
+    <button type="button" class="me-gusta" [class.activo]="leDiMeGusta()" [disabled]="procesando()" (click)="alternarMeGusta()">
+      {{ leDiMeGusta() ? '♥' : '♡' }} {{ cantidadMeGusta() }}
+    </button>
+
+    @if (esMia()) {
+      <button type="button" class="eliminar" (click)="eliminar()">Eliminar</button>
+    }
+  </footer>
+</article>

@@ -2,6 +2,10 @@
   <form class="tarjeta" [formGroup]="form" (ngSubmit)="enviar()" novalidate>
     <h1>Iniciar sesión</h1>
 
+    @if (sesionVencida) {
+      <p class="error-servidor">Tu sesión expiró. Volvé a iniciar sesión.</p>
+    }
+
     <div class="campo">
       <label for="identificador">Correo o nombre de usuario</label>
       <input

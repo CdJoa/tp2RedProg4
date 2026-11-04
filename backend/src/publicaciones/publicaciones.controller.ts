@@ -2,11 +2,15 @@ import {
   BadRequestException,
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
-  Patch,
+  ParseIntPipe,
   Post,
+  Query,
   Req,
   UploadedFile,
   UseGuards,
@@ -15,7 +19,6 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { PublicacionesService } from './publicaciones.service.js';
 import { CreatePublicacionDto } from './dto/create-publicacion.dto.js';
-import { UpdatePublicacionDto } from './dto/update-publicacion.dto.js';
 import { AuthGuard } from '../guards/auth/auth.guard.js';
 import { FileService } from '../archivos/file.service.js';
 
@@ -53,23 +56,37 @@ export class PublicacionesController {
     return this.publicacionesService.create(createPublicacionDto, req.user.sub, urlImagen);
   }
 
+  // GET /publicaciones?orden=fecha|meGusta&usuario=<id>&offset=0&limit=10
+  // Todos los parámetros son opcionales; si no vienen se usan los valores por defecto
   @Get()
-  findAll() {
-    return this.publicacionesService.findAll();
+  findAll(
+    @Query('orden', new DefaultValuePipe('fecha')) orden: string,
+    @Query('usuario') usuario: string | undefined,
+    @Query('offset', new DefaultValuePipe(0), ParseIntPipe) offset: number,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+  ) {
+    return this.publicacionesService.findAll(orden, usuario, offset, limit);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.publicacionesService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePublicacionDto: UpdatePublicacionDto) {
-    return this.publicacionesService.update(+id, updatePublicacionDto);
-  }
-
+  // DELETE /publicaciones/:id  → baja lógica (sólo el autor)
+  @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.publicacionesService.remove(+id);
+  remove(@Param('id') id: string, @Req() req: { user: { sub: string } }) {
+    return this.publicacionesService.remove(id, req.user.sub);
+  }
+
+  // POST /publicaciones/:id/me-gusta
+  @UseGuards(AuthGuard)
+  @Post(':id/me-gusta')
+  @HttpCode(HttpStatus.OK)
+  darMeGusta(@Param('id') id: string, @Req() req: { user: { sub: string } }) {
+    return this.publicacionesService.darMeGusta(id, req.user.sub);
+  }
+
+  // DELETE /publicaciones/:id/me-gusta
+  @UseGuards(AuthGuard)
+  @Delete(':id/me-gusta')
+  quitarMeGusta(@Param('id') id: string, @Req() req: { user: { sub: string } }) {
+    return this.publicacionesService.quitarMeGusta(id, req.user.sub);
   }
 }

@@ -1,32 +1,35 @@
 <section class="publicaciones">
+  <button type="button" class="nueva-boton" (click)="mostrarFormulario.set(!mostrarFormulario())">
+    {{ mostrarFormulario() ? 'Cancelar' : '+ Nueva publicación' }}
+  </button>
+
+  @if (mostrarFormulario()) {
+    <app-nueva-publicacion (creada)="alCrear()" />
+  }
+
+  <div class="orden">
+    <span>Ordenar por:</span>
+    <button type="button" [class.activo]="orden() === 'fecha'" (click)="cambiarOrden('fecha')">Más recientes</button>
+    <button type="button" [class.activo]="orden() === 'meGusta'" (click)="cambiarOrden('meGusta')">Más me gusta</button>
+  </div>
+
   @if (cargando()) {
     <p class="aviso">Cargando publicaciones...</p>
   } @else if (error()) {
     <p class="aviso error">{{ error() }}</p>
   } @else {
     @for (publicacion of publicaciones(); track publicacion._id) {
-      <article class="tarjeta">
-        <header class="autor">
-          @if (publicacion.usuario.imagenPerfil) {
-            <img class="avatar" [src]="publicacion.usuario.imagenPerfil" alt="" />
-          }
-          <div>
-            <strong>{{ publicacion.usuario.nombre }} {{ publicacion.usuario.apellido }}</strong>
-            <span class="detalle">&#64;{{ publicacion.usuario.nombreUsuario }} · {{ publicacion.createdAt | date: 'dd/MM/yyyy HH:mm' }}</span>
-          </div>
-        </header>
-
-        <h2>{{ publicacion.titulo }}</h2>
-        <p>{{ publicacion.descripcion }}</p>
-
-        @if (publicacion.imagen) {
-          <img class="imagen" [src]="publicacion.imagen" [alt]="publicacion.titulo" />
-        }
-
-        <footer class="detalle">{{ publicacion.meGusta.length }} me gusta</footer>
-      </article>
+      <app-publicacion [publicacion]="publicacion" (eliminada)="alEliminar()" />
     } @empty {
       <p class="aviso">Todavía no hay publicaciones.</p>
+    }
+
+    @if (totalPaginas() > 1) {
+      <nav class="paginacion">
+        <button type="button" [disabled]="pagina() === 0" (click)="irAPagina(pagina() - 1)">Anterior</button>
+        <span>Página {{ pagina() + 1 }} de {{ totalPaginas() }}</span>
+        <button type="button" [disabled]="pagina() + 1 >= totalPaginas()" (click)="irAPagina(pagina() + 1)">Siguiente</button>
+      </nav>
     }
   }
 </section>

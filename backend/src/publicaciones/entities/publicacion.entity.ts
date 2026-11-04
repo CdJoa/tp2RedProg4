@@ -21,6 +21,11 @@ export class Publicacion {
     @Prop({ type: [Types.ObjectId], ref: 'Usuario', default: [] })
     meGusta: Types.ObjectId[];
 
+    // Cantidad de me gusta, guardada aparte para poder ordenar por ella
+    // (Mongo no ordena por el largo de un array con un find común)
+    @Prop({ default: 0 })
+    cantidadMeGusta: number;
+
     // Baja lógica: al eliminar se pone en false en vez de borrarla
     @Prop({ default: true })
     activa: boolean;

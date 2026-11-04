@@ -17,5 +17,15 @@
       <p><strong>Descripción:</strong> {{ usuario.descripcion || '-' }}</p>
       <p><strong>Perfil:</strong> {{ usuario.perfil }}</p>
     </div>
+
+    <h2>Mis últimas publicaciones</h2>
+    <div class="mis-publicaciones">
+      @for (publicacion of misPublicaciones(); track publicacion._id) {
+        <!-- si elimino una, se vuelve a pedir para completar las 3 -->
+        <app-publicacion [publicacion]="publicacion" (eliminada)="cargarMisPublicaciones()" />
+      } @empty {
+        <p class="aviso">Todavía no publicaste nada.</p>
+      }
+    </div>
   </section>
 }

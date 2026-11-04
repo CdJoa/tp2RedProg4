@@ -1,0 +1,71 @@
+.tarjeta {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 4px 16px rgb(15 23 42 / 0.08);
+}
+
+.tarjeta h2 {
+  margin: 0.75rem 0 0.25rem;
+  font-size: 1.15rem;
+}
+
+.tarjeta p {
+  margin: 0 0 0.75rem;
+  white-space: pre-line;
+}
+
+.autor {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.autor div {
+  display: flex;
+  flex-direction: column;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.imagen {
+  width: 100%;
+  max-height: 480px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.detalle {
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.acciones {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.acciones button {
+  border: 1px solid #cbd5e1;
+  background: white;
+  border-radius: 999px;
+  padding: 0.3rem 0.9rem;
+  cursor: pointer;
+}
+
+.me-gusta.activo {
+  color: #e11d48;
+  border-color: #fda4af;
+  background: #fff1f2;
+}
+
+.eliminar {
+  color: #b91c1c;
+}

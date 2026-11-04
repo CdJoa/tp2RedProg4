@@ -19,6 +19,8 @@ export class Login {
 
   protected enviando = signal(false);
   protected errorServidor = signal<string | null>(null);
+  // Llega con ?vencida=true cuando se cerró la sesión porque venció el token
+  protected sesionVencida = this.route.snapshot.queryParamMap.has('vencida');
   protected verPassword = signal(false);
 
   protected form = this.fb.nonNullable.group({
