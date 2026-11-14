@@ -142,7 +142,8 @@ export class Registro {
       .subscribe({
         next: () => {
           this.enviando.set(false);
-          this.router.navigate(['/login']);
+          // Pasa por la pantalla de cargando (spinner + /auth/autorizar) antes de ir a publicaciones
+          this.router.navigate(['/cargando']);
         },
         error: (err: HttpErrorResponse) => {
           this.enviando.set(false);

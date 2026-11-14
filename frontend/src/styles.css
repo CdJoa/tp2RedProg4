@@ -290,3 +290,38 @@ a {
   font-weight: 700;
   font-size: 0.8rem;
 }
+
+/* ---------- Modales (reemplazo de alert/confirm y aviso de sesión) ---------- */
+.modal-fondo {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgb(5 25 50 / 0.55);
+  backdrop-filter: blur(2px);
+}
+
+.modal-tarjeta {
+  max-width: 400px;
+}
+
+.modal-texto {
+  margin: 0.25rem 0;
+  line-height: 1.45;
+  color: var(--texto);
+}
+
+.modal-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 0.25rem;
+}
+
+.modal-acciones .principal {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.9rem;
+}

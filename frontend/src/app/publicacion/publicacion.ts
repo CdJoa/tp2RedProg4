@@ -36,6 +36,9 @@ export class Publicacion {
   protected procesando = signal(false);
   // true si la foto del autor no se pudo cargar
   protected fotoFallo = signal(false);
+  // Controla el modal de confirmación para eliminar (sin usar confirm/alert nativos)
+  protected confirmandoEliminar = signal(false);
+  protected eliminando = signal(false);
 
   protected alternarMeGusta() {
     if (this.procesando()) return;
@@ -57,10 +60,18 @@ export class Publicacion {
     });
   }
 
-  protected eliminar() {
-    if (!confirm('¿Eliminar esta publicación?')) return;
+  protected confirmarEliminar() {
+    if (this.eliminando()) return;
+    this.eliminando.set(true);
     this.publicacionesService.eliminar(this.publicacion()._id).subscribe({
-      next: () => this.eliminada.emit(this.publicacion()._id),
+      next: () => {
+        this.eliminando.set(false);
+        this.confirmandoEliminar.set(false);
+        this.eliminada.emit(this.publicacion()._id);
+      },
+      error: () => {
+        this.eliminando.set(false);
+      },
     });
   }
 }

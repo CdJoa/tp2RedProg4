@@ -58,6 +58,7 @@ export class PublicacionesController {
 
   // GET /publicaciones?orden=fecha|meGusta&direccion=desc|asc&usuario=<id>&offset=0&limit=10
   // Todos los parámetros son opcionales; si no vienen se usan los valores por defecto
+  @UseGuards(AuthGuard)
   @Get()
   findAll(
     @Query('orden', new DefaultValuePipe('fecha')) orden: string,

@@ -14,8 +14,9 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(pedido).pipe(
     catchError((err: HttpErrorResponse) => {
-      // Sólo si mandamos token: un 401 en el login (contraseña mal) no cierra nada
-      if (err.status === 401 && token) {
+      // Sólo si mandamos token y no es la validación inicial (/auth/autorizar la maneja Cargando):
+      // un 401 en el login (contraseña mal) tampoco cierra nada.
+      if (err.status === 401 && token && !req.url.endsWith('/auth/autorizar')) {
         auth.cerrarSesionVencida();
       }
       return throwError(() => err);

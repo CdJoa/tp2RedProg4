@@ -1,11 +1,12 @@
 <nav class="navbar">
-  <a class="marca" routerLink="/home">
+  <a class="marca" routerLink="/publicaciones">
     <img class="logo" src="logo.png" alt="" />
     Conecta2s
   </a>
 
   <div class="links">
     @if (auth.usuarioActual()) {
+      <a routerLink="/publicaciones" routerLinkActive="activo">Publicaciones</a>
       <a routerLink="/mi-perfil" routerLinkActive="activo">Mi perfil</a>
     } @else {
       <a routerLink="/login" routerLinkActive="activo">Login</a>
@@ -15,7 +16,15 @@
 
   <div class="usuario">
     @if (auth.usuarioActual(); as usuario) {
-      <span>{{ usuario.nombreUsuario }}</span>
+      <div
+        class="reloj-sesion"
+        [class.por-vencer]="auth.enTiempoDeAviso()"
+        [class.vencido]="auth.segundosRestantes() === 0"
+        title="Tiempo restante de sesión"
+      >
+        ⏱ {{ auth.segundosRestantes() | tiempoRestante }}
+      </div>
+      <span class="nombre-usuario">{{ usuario.nombreUsuario }}</span>
       <button (click)="cerrarSesion()">Cerrar sesión</button>
     }
   </div>

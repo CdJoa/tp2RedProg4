@@ -40,6 +40,33 @@ export class AuthService {
     return this.generarRespuesta(usuarioSinPassword);
   }
 
+  // Valida que el usuario del token siga existiendo y devuelve sus datos actualizados.
+  async autorizar(usuarioId: string) {
+    const usuario = await this.usuariosService.findById(usuarioId);
+    if (!usuario) {
+      throw new UnauthorizedException('El usuario no existe');
+    }
+    return usuario;
+  }
+
+  // Firma un nuevo token con la misma payload (sin exp ni iat viejos) y 15m nuevos de validez.
+  async refrescar(payload: {
+    sub: string;
+    email: string;
+    nombreUsuario: string;
+    perfil: string;
+  }) {
+    const nuevoPayload = {
+      sub: payload.sub,
+      email: payload.email,
+      nombreUsuario: payload.nombreUsuario,
+      perfil: payload.perfil,
+    };
+    return {
+      access_token: await this.jwtService.signAsync(nuevoPayload),
+    };
+  }
+
   // Firma el JWT y lo devuelve junto con todos los datos del usuario.
   private async generarRespuesta(usuario: {
     _id: unknown;

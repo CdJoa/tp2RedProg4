@@ -80,8 +80,37 @@
   gap: 0.75rem;
 }
 
+/* Reloj digital estilo cyber / bandeja de Windows Vista */
+.reloj-sesion {
+  padding: 0.22rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid rgb(140 210 255 / 0.55);
+  background: linear-gradient(to bottom, #071d36 0%, #0d3158 100%);
+  color: #8ef5a8;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  box-shadow:
+    0 1px 3px rgb(0 0 0 / 0.6) inset,
+    0 0 6px rgb(120 200 255 / 0.35);
+}
+
+.reloj-sesion.por-vencer {
+  color: #ffe066;
+  border-color: #f2b705;
+  box-shadow:
+    0 1px 3px rgb(0 0 0 / 0.6) inset,
+    0 0 8px rgb(255 200 50 / 0.65);
+}
+
+.reloj-sesion.vencido {
+  color: #ff857a;
+  border-color: #e05245;
+}
+
 /* Bolita verde de "Conectado" antes del nombre de usuario */
-.usuario span {
+.usuario .nombre-usuario {
   display: flex;
   align-items: center;
   gap: 0.4rem;
@@ -89,7 +118,7 @@
   text-shadow: 0 1px 1px rgb(0 0 0 / 0.5);
 }
 
-.usuario span::before {
+.usuario .nombre-usuario::before {
   content: '';
   width: 11px;
   height: 11px;

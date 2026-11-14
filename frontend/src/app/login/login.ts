@@ -47,9 +47,11 @@ export class Login {
     this.auth.login({ identificador: identificador.trim(), password }).subscribe({
       next: () => {
         this.enviando.set(false);
-        // Vuelve a la página que quería ver antes del login (la deja el authGuard)
-        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') ?? '/home';
-        this.router.navigateByUrl(returnUrl);
+        // Pasa por la pantalla de cargando (spinner + /auth/autorizar) antes de ir al destino
+        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+        this.router.navigate(['/cargando'], {
+          queryParams: returnUrl ? { returnUrl } : undefined,
+        });
       },
       error: (err: HttpErrorResponse) => {
         this.enviando.set(false);

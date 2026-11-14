@@ -25,7 +25,24 @@
     </button>
 
     @if (esMia()) {
-      <button type="button" class="eliminar" (click)="eliminar()">Eliminar</button>
+      <button type="button" class="eliminar" (click)="confirmandoEliminar.set(true)">Eliminar</button>
     }
   </footer>
 </article>
+
+@if (confirmandoEliminar()) {
+  <div class="modal-fondo" role="dialog" aria-modal="true">
+    <div class="tarjeta modal-tarjeta">
+      <h1>Eliminar publicación</h1>
+      <p class="modal-texto">¿Estás seguro de que querés eliminar esta publicación?</p>
+      <div class="modal-acciones">
+        <button type="button" class="boton" [disabled]="eliminando()" (click)="confirmandoEliminar.set(false)">
+          Cancelar
+        </button>
+        <button type="button" class="principal" [disabled]="eliminando()" (click)="confirmarEliminar()">
+          {{ eliminando() ? 'Eliminando...' : 'Eliminar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

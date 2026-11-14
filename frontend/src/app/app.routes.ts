@@ -4,10 +4,12 @@ import { Registro } from './registro/registro';
 import { Home } from './home/home';
 import { Publicaciones } from './publicaciones/publicaciones';
 import { MiPerfil } from './mi-perfil/mi-perfil';
+import { Cargando } from './cargando/cargando';
 import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/cargando', pathMatch: 'full' },
+  { path: 'cargando', component: Cargando },
   { path: 'login', component: Login, canActivate: [authGuard] },
   { path: 'registro', component: Registro, canActivate: [authGuard] },
   { path: 'home', component: Home, canActivate: [authGuard] },
