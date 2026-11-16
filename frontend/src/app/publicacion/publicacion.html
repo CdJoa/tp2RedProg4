@@ -23,7 +23,7 @@
   @if (vistaPrevia() && totalComentarios() > 0) {
     <section class="comentarios">
       @for (comentario of comentarios(); track comentario._id) {
-        <app-comentario-item [comentario]="comentario" [compacto]="true" />
+        <app-comentario-item [comentario]="comentario" [compacto]="true" (eliminado)="alEliminarComentario()" />
       }
 
       <!-- Estilo imageboard: aviso de que el hilo sigue -->
@@ -51,7 +51,7 @@
 
     </div>
 
-    @if (esMia()) {
+    @if (puedeEliminar()) {
       <button type="button" class="eliminar" (click)="confirmandoEliminar.set(true)">Eliminar</button>
     }
   </footer>
@@ -61,7 +61,15 @@
   <div class="modal-fondo" role="dialog" aria-modal="true">
     <div class="tarjeta modal-tarjeta">
       <h1>Eliminar publicación</h1>
-      <p class="modal-texto">¿Estás seguro de que querés eliminar esta publicación?</p>
+      @if (esMia()) {
+        <p class="modal-texto">¿Estás seguro de que querés eliminar esta publicación?</p>
+      } @else {
+        <!-- Admin borrando la publicación de otro -->
+        <p class="modal-texto">
+          Vas a dar de baja la publicación de &#64;{{ publicacion().usuario.nombreUsuario }} como administrador.
+          También dejarán de verse sus comentarios. ¿Continuar?
+        </p>
+      }
       <div class="modal-acciones">
         <button type="button" class="boton" [disabled]="eliminando()" (click)="confirmandoEliminar.set(false)">
           Cancelar

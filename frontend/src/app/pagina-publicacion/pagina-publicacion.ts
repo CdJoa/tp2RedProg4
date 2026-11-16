@@ -91,6 +91,12 @@ export class PaginaPublicacion implements OnInit {
     });
   }
 
+  // Se eliminó un comentario: lo saca de la lista y baja el total
+  protected alEliminarComentario(id: string) {
+    this.comentarios.update((actuales) => actuales.filter((c) => c._id !== id));
+    this.totalComentarios.update((n) => n - 1);
+  }
+
   // Si borro la publicación desde acá, vuelvo al listado
   protected alEliminar() {
     this.router.navigateByUrl('/publicaciones');

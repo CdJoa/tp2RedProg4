@@ -27,15 +27,20 @@
 
 p {
   margin: 0.2rem 0 0;
-  padding-right: 2rem; /* que el texto largo no quede debajo del lápiz */
+  padding-right: 3.75rem; /* que el texto largo no quede debajo del lápiz y el tacho */
   white-space: pre-line;
 }
 
-/* ---------- Lápiz: cuadradito blanco con brillo ---------- */
-.editar-boton {
+/* ---------- Herramientas (lápiz y tacho): cuadraditos blancos con brillo ---------- */
+.herramientas {
   position: absolute;
   top: 0.35rem;
   right: 0.35rem;
+  display: flex;
+  gap: 0.25rem;
+}
+
+.herramienta {
   display: grid;
   place-items: center;
   width: 26px;
@@ -49,10 +54,21 @@ p {
   box-shadow: 0 1px 0 rgb(255 255 255 / 0.8) inset;
 }
 
-.editar-boton:hover {
+.herramienta:hover {
   border-color: #3c7fb1;
   background: var(--brillo-boton-hover);
   box-shadow: 0 0 6px rgb(80 170 240 / 0.6);
+}
+
+/* Tacho: rojo, con brillo rojizo al pasar el mouse */
+.herramienta.borrar {
+  color: var(--rojo);
+}
+
+.herramienta.borrar:hover {
+  border-color: var(--rojo);
+  background: linear-gradient(to bottom, #fff0ee 0%, #ffd6d0 48%, #ffbfb6 50%, #ffd2cb 100%);
+  box-shadow: 0 0 6px rgb(230 80 60 / 0.6);
 }
 
 /* ---------- Modo edición ---------- */

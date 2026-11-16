@@ -1,6 +1,6 @@
 <main class="contenedor">
   <form class="tarjeta ancha" [formGroup]="form" (ngSubmit)="enviar()" novalidate>
-    <h1>Crear cuenta</h1>
+    <h1>{{ modoAdmin() ? 'Nuevo usuario' : 'Crear cuenta' }}</h1>
 
     <div class="fila">
       <div class="campo">
@@ -173,14 +173,35 @@
       }
     </div>
 
+    <!-- Sólo el administrador elige el perfil -->
+    @if (modoAdmin()) {
+      <fieldset class="campo perfil">
+        <legend>Perfil</legend>
+        <label>
+          <input type="radio" formControlName="perfil" value="usuario" />
+          Usuario
+        </label>
+        <label>
+          <input type="radio" formControlName="perfil" value="administrador" />
+          Administrador
+        </label>
+      </fieldset>
+    }
+
     @if (errorServidor(); as error) {
       <p class="error-servidor">{{ error }}</p>
     }
 
     <button type="submit" class="principal" [disabled]="enviando()">
-      {{ enviando() ? 'Registrando...' : 'Registrarme' }}
+      @if (modoAdmin()) {
+        {{ enviando() ? 'Creando...' : 'Crear usuario' }}
+      } @else {
+        {{ enviando() ? 'Registrando...' : 'Registrarme' }}
+      }
     </button>
 
-    <p class="pie">¿Ya tenés cuenta? <a routerLink="/login">Iniciá sesión</a></p>
+    @if (!modoAdmin()) {
+      <p class="pie">¿Ya tenés cuenta? <a routerLink="/login">Iniciá sesión</a></p>
+    }
   </form>
 </main>

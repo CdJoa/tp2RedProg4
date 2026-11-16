@@ -1,0 +1,94 @@
+<section class="dashboard">
+  <div class="barra">
+    <h2>Usuarios</h2>
+    @if (!cargando() && !error()) {
+      <span class="resumen">{{ usuarios().length }} en total · {{ cantidadActivos() }} activos</span>
+    }
+    <button type="button" class="nuevo-boton" (click)="mostrarFormulario.set(!mostrarFormulario()); aviso.set(null)">
+      {{ mostrarFormulario() ? 'Cancelar' : '+ Nuevo usuario' }}
+    </button>
+  </div>
+
+  <!-- Mismo formulario que el registro, con los radio buttons de perfil -->
+  @if (mostrarFormulario()) {
+    <app-registro [modoAdmin]="true" (creado)="alCrear($event)" />
+  }
+
+  @if (aviso()) {
+    <p class="aviso-ok">{{ aviso() }}</p>
+  }
+  @if (errorAccion()) {
+    <p class="error-servidor">{{ errorAccion() }}</p>
+  }
+
+  @if (cargando()) {
+    <div class="cargando-bloque" role="status">
+      <div class="spinner chico" aria-hidden="true"></div>
+      <p>Cargando usuarios...</p>
+    </div>
+  } @else if (error()) {
+    <p class="error-servidor">{{ error() }}</p>
+  } @else {
+    <ul class="lista">
+      @for (usuario of usuarios(); track usuario._id) {
+        <li class="usuario" [class.deshabilitado]="usuario.activo === false">
+          @if (usuario.imagenPerfil) {
+            <img class="avatar" [src]="usuario.imagenPerfil" alt="" />
+          } @else {
+            <div class="avatar sin-foto">{{ usuario.nombre.charAt(0) }}</div>
+          }
+
+          <div class="datos">
+            <strong>{{ usuario.nombre }} {{ usuario.apellido }}</strong>
+            <span class="detalle">&#64;{{ usuario.nombreUsuario }} · {{ usuario.email }}</span>
+            <div class="etiquetas">
+              <span class="etiqueta" [class.admin]="usuario.perfil === 'administrador'">
+                {{ usuario.perfil === 'administrador' ? 'Administrador' : 'Usuario' }}
+              </span>
+              @if (usuario.activo === false) {
+                <span class="etiqueta baja">Deshabilitado</span>
+              } @else {
+                <span class="etiqueta activo">Activo</span>
+              }
+            </div>
+          </div>
+
+          <div class="accion">
+            @if (usuario._id === miId()) {
+              <span class="vos">(vos)</span>
+            } @else if (usuario.activo === false) {
+              <button type="button" class="boton" [disabled]="procesandoId() === usuario._id" (click)="habilitar(usuario)">
+                {{ procesandoId() === usuario._id ? 'Habilitando...' : 'Habilitar' }}
+              </button>
+            } @else {
+              <button type="button" class="boton peligro" [disabled]="procesandoId() === usuario._id" (click)="aDeshabilitar.set(usuario)">
+                Deshabilitar
+              </button>
+            }
+          </div>
+        </li>
+      } @empty {
+        <li class="vacio">No hay usuarios.</li>
+      }
+    </ul>
+  }
+</section>
+
+<!-- Confirmación para deshabilitar (modal, sin confirm() nativo) -->
+@if (aDeshabilitar(); as usuario) {
+  <div class="modal-fondo" role="dialog" aria-modal="true">
+    <div class="tarjeta modal-tarjeta">
+      <h1>Deshabilitar usuario</h1>
+      <p class="modal-texto">
+        &#64;{{ usuario.nombreUsuario }} no va a poder ingresar a la aplicación hasta que lo vuelvas a habilitar.
+        ¿Continuar?
+      </p>
+      <div class="modal-acciones">
+        <button type="button" class="boton" [disabled]="procesandoId()" (click)="aDeshabilitar.set(null)">Cancelar</button>
+        <button type="button" class="principal" [disabled]="procesandoId()" (click)="confirmarDeshabilitar()">
+          {{ procesandoId() ? 'Deshabilitando...' : 'Deshabilitar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

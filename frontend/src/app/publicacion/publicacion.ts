@@ -32,6 +32,8 @@ export class Publicacion implements OnInit {
 
   // ¿La publicación es mía? (para mostrar el botón eliminar)
   protected esMia = computed(() => this.publicacion().usuario._id === this.miId());
+  // El botón Eliminar lo ve el autor o un administrador (el back controla lo mismo)
+  protected puedeEliminar = computed(() => this.esMia() || this.auth.esAdmin());
 
   // Estado del me gusta: arranca con lo que vino del back (linkedSignal)
   // y después se actualiza en la tarjeta al tocar el botón.
@@ -57,6 +59,16 @@ export class Publicacion implements OnInit {
   );
 
   ngOnInit() {
+    this.cargarComentarios();
+  }
+
+  // Se eliminó un comentario de la vista previa: vuelve a pedir los últimos 3
+  // (así entra el siguiente y el total queda bien)
+  protected alEliminarComentario() {
+    this.cargarComentarios();
+  }
+
+  private cargarComentarios() {
     if (!this.vistaPrevia()) return;
     // El input ya está disponible acá: pide los últimos 3 comentarios
     this.publicacionesService

@@ -36,7 +36,7 @@
     <h3 class="titulo-hilo">Comentarios ({{ totalComentarios() }})</h3>
 
     @for (comentario of comentarios(); track comentario._id) {
-      <app-comentario-item [comentario]="comentario" />
+      <app-comentario-item [comentario]="comentario" (eliminado)="alEliminarComentario($event)" />
     } @empty {
       @if (!cargandoComentarios()) {
         <p class="aviso">Todavía no hay comentarios. ¡Sé el primero!</p>

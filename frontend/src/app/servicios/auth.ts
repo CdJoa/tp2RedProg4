@@ -1,7 +1,7 @@
-import { Service, inject, signal } from '@angular/core';
+import { Service, computed, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, of, switchMap, tap } from 'rxjs';
+import { Observable, map, of, switchMap, tap } from 'rxjs';
 import { Usuario } from '../modelos/usuario';
 import { environment } from '../../environments/environment';
 import { prepararImagen } from '../validadores/preparar-imagen';
@@ -31,6 +31,33 @@ export interface RespuestaAuth {
 // (a los 10m si el token es de 15m; a los ~13s si el token es de 20s).
 const PROPORCION_AVISO_RESTANTE = 1 / 3;
 
+// Arma el multipart/form-data de un usuario (si hay imagen, primero la achica).
+// Lo usan el registro (POST /auth/registro) y el alta del admin (POST /usuarios).
+export function armarFormDataUsuario(datos: RegistroDatos, perfil?: string): Observable<FormData> {
+  const imagen$: Observable<File | null> = datos.imagenPerfil ? prepararImagen(datos.imagenPerfil) : of(null);
+  return imagen$.pipe(
+    map((imagen) => {
+      const formData = new FormData();
+      formData.append('nombre', datos.nombre);
+      formData.append('apellido', datos.apellido);
+      formData.append('email', datos.email);
+      formData.append('nombreUsuario', datos.nombreUsuario);
+      formData.append('password', datos.password);
+      formData.append('fechaNacimiento', datos.fechaNacimiento);
+      if (datos.descripcion) {
+        formData.append('descripcion', datos.descripcion);
+      }
+      if (perfil) {
+        formData.append('perfil', perfil);
+      }
+      if (imagen) {
+        formData.append('imagenPerfil', imagen);
+      }
+      return formData;
+    }),
+  );
+}
+
 @Service()
 export class Auth {
   private http = inject(HttpClient);
@@ -40,6 +67,9 @@ export class Auth {
   // usuario logueado y su token (se guardan en localStorage para no perderlos al recargar)
   usuarioActual = signal<Usuario | null>(this.leerUsuarioGuardado());
   token = signal<string | null>(globalThis.localStorage?.getItem('token') ?? null);
+
+  // true si el usuario logueado es administrador (botones y páginas de admin)
+  esAdmin = computed(() => this.usuarioActual()?.perfil === 'administrador');
 
   // Indica si ya se pasó por la pantalla de cargando (/auth/autorizar) al iniciar la app
   sesionValidada = signal(false);
@@ -60,24 +90,8 @@ export class Auth {
   // POST /auth/registro espera multipart/form-data (datos + archivo "imagenPerfil").
   // Devuelve { access_token, usuario } igual que el login y guarda la sesión.
   registrar(datos: RegistroDatos): Observable<RespuestaAuth> {
-    const imagen$: Observable<File | null> = datos.imagenPerfil ? prepararImagen(datos.imagenPerfil) : of(null);
-    return imagen$.pipe(
-      switchMap((imagen) => {
-        const formData = new FormData();
-        formData.append('nombre', datos.nombre);
-        formData.append('apellido', datos.apellido);
-        formData.append('email', datos.email);
-        formData.append('nombreUsuario', datos.nombreUsuario);
-        formData.append('password', datos.password);
-        formData.append('fechaNacimiento', datos.fechaNacimiento);
-        if (datos.descripcion) {
-          formData.append('descripcion', datos.descripcion);
-        }
-        if (imagen) {
-          formData.append('imagenPerfil', imagen);
-        }
-        return this.http.post<RespuestaAuth>(`${this.apiUrl}/auth/registro`, formData);
-      }),
+    return armarFormDataUsuario(datos).pipe(
+      switchMap((formData) => this.http.post<RespuestaAuth>(`${this.apiUrl}/auth/registro`, formData)),
       tap(({ access_token, usuario }) => this.guardarSesion(access_token, usuario)),
     );
   }

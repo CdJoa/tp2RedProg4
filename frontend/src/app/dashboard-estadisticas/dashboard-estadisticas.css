@@ -1,0 +1,80 @@
+.estadisticas {
+  max-width: 760px;
+  width: 100%;
+  margin: 0.75rem auto 2rem;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-sizing: border-box;
+}
+
+/* Cada gráfico es una "ventanita" con barra de título, como las publicaciones */
+.tarjeta-grafico {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0 1rem 1rem;
+  background: #fdfeff;
+  border: 1px solid var(--borde-ventana);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.6) inset,
+    0 8px 22px rgb(0 30 70 / 0.35);
+}
+
+.tarjeta-grafico h3 {
+  margin: 0 -1rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  color: white;
+  text-shadow: 0 1px 2px rgb(0 40 90 / 0.7);
+  background: var(--brillo-titulo);
+  border-bottom: 1px solid var(--azul-oscuro);
+}
+
+/* Desde / hasta */
+.rango {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.rango label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+  color: var(--azul-oscuro);
+}
+
+.rango input {
+  padding: 0.25rem 0.4rem;
+  border: 1px solid var(--borde-control);
+  border-radius: 3px;
+  font: inherit;
+  color: var(--texto);
+}
+
+.rango input:focus {
+  outline: none;
+  border-color: #3c7fb1;
+  box-shadow: 0 0 6px rgb(80 170 240 / 0.6);
+}
+
+.resumen {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+}
+
+.sin-datos {
+  margin: 0;
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--texto-suave);
+  background: #eef5fc;
+  border: 1px dashed #b9d2ea;
+  border-radius: 4px;
+}

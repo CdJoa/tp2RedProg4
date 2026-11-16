@@ -82,6 +82,11 @@ export class PublicacionesService {
     return this.http.post<Comentario>(`${this.apiUrl}/${id}/comentarios`, { mensaje });
   }
 
+  // DELETE /publicaciones/:id/comentarios/:comentarioId  → baja lógica (autor o admin)
+  eliminarComentario(id: string, comentarioId: string) {
+    return this.http.delete(`${this.apiUrl}/${id}/comentarios/${comentarioId}`);
+  }
+
   // PUT /publicaciones/:id/comentarios/:comentarioId  (JSON: { mensaje })
   editarComentario(id: string, comentarioId: string, mensaje: string) {
     return this.http.put<Comentario>(`${this.apiUrl}/${id}/comentarios/${comentarioId}`, {

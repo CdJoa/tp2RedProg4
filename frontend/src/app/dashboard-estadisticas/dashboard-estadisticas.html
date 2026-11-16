@@ -1,0 +1,73 @@
+<!-- Selector de lapso: lo usan los tres gráficos -->
+<ng-template #selectorRango let-bloque>
+  <div class="rango">
+    <label>
+      Desde
+      <input type="date" [value]="bloque.desde()" [max]="bloque.hasta()" (change)="bloque.cambiarDesde($any($event.target).value)" />
+    </label>
+    <label>
+      Hasta
+      <input type="date" [value]="bloque.hasta()" [min]="bloque.desde()" (change)="bloque.cambiarHasta($any($event.target).value)" />
+    </label>
+  </div>
+</ng-template>
+
+<!-- Estado de carga / error / sin datos, común a los tres -->
+<ng-template #estado let-bloque let-vacio="vacio">
+  @if (bloque.cargando()) {
+    <div class="cargando-bloque" role="status">
+      <div class="spinner chico" aria-hidden="true"></div>
+      <p>Cargando...</p>
+    </div>
+  } @else if (bloque.error()) {
+    <p class="error-servidor">{{ bloque.error() }}</p>
+  } @else if (vacio) {
+    <p class="sin-datos">No hay datos en ese lapso de tiempo.</p>
+  }
+</ng-template>
+
+<section class="estadisticas">
+  <!-- 1) Torta -->
+  <article class="tarjeta-grafico">
+    <h3>🥧 Publicaciones por usuario</h3>
+    <ng-container *ngTemplateOutlet="selectorRango; context: { $implicit: publicaciones }" />
+    <ng-container *ngTemplateOutlet="estado; context: { $implicit: publicaciones, vacio: publicacionesValores().length === 0 }" />
+    @if (!publicaciones.cargando() && !publicaciones.error() && publicacionesValores().length > 0) {
+      <p class="resumen">{{ totalPublicaciones() }} publicaciones de {{ publicacionesValores().length }} usuarios</p>
+      <app-grafico tipo="pie" [etiquetas]="publicacionesEtiquetas()" [valores]="publicacionesValores()" serie="Publicaciones" />
+    }
+  </article>
+
+  <!-- 2) Líneas -->
+  <article class="tarjeta-grafico">
+    <h3>📈 Comentarios por día</h3>
+    <ng-container *ngTemplateOutlet="selectorRango; context: { $implicit: comentarios }" />
+    <ng-container *ngTemplateOutlet="estado; context: { $implicit: comentarios, vacio: (comentarios.datos()?.total ?? 0) === 0 }" />
+    @if (!comentarios.cargando() && !comentarios.error() && (comentarios.datos()?.total ?? 0) > 0) {
+      <p class="resumen">{{ comentarios.datos()?.total }} comentarios en el lapso</p>
+      <app-grafico tipo="line" [etiquetas]="comentariosEtiquetas()" [valores]="comentariosValores()" serie="Comentarios" />
+    }
+  </article>
+
+  <!-- 3) Barras horizontales -->
+  <article class="tarjeta-grafico">
+    <h3>📊 Comentarios por publicación</h3>
+    <ng-container *ngTemplateOutlet="selectorRango; context: { $implicit: porPublicacion }" />
+    <ng-container *ngTemplateOutlet="estado; context: { $implicit: porPublicacion, vacio: porPublicacionValores().length === 0 }" />
+    @if (!porPublicacion.cargando() && !porPublicacion.error() && porPublicacionValores().length > 0) {
+      <p class="resumen">{{ porPublicacionValores().length }} publicaciones comentadas</p>
+      <app-grafico tipo="bar" [horizontal]="true" color="#45a3e8" [etiquetas]="porPublicacionEtiquetas()" [valores]="porPublicacionValores()" serie="Comentarios" />
+    }
+  </article>
+
+  <!-- 4) Barras verticales -->
+  <article class="tarjeta-grafico">
+    <h3>👥 Usuarios registrados por día</h3>
+    <ng-container *ngTemplateOutlet="selectorRango; context: { $implicit: usuarios }" />
+    <ng-container *ngTemplateOutlet="estado; context: { $implicit: usuarios, vacio: (usuarios.datos()?.total ?? 0) === 0 }" />
+    @if (!usuarios.cargando() && !usuarios.error() && (usuarios.datos()?.total ?? 0) > 0) {
+      <p class="resumen">{{ usuarios.datos()?.total }} usuarios nuevos en el lapso</p>
+      <app-grafico tipo="bar" color="#2e9e5b" [etiquetas]="usuariosEtiquetas()" [valores]="usuariosValores()" serie="Usuarios nuevos" />
+    }
+  </article>
+</section>

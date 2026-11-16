@@ -1,8 +1,10 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { Component, DestroyRef, inject, input, output, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { Auth } from '../servicios/auth';
+import { Auth, RegistroDatos } from '../servicios/auth';
+import { UsuariosService } from '../servicios/usuarios';
+import { Usuario } from '../modelos/usuario';
 import {
   archivoImagen,
   camposIguales,
@@ -21,7 +23,15 @@ import {
 export class Registro {
   private fb = inject(FormBuilder);
   private auth = inject(Auth);
+  private usuariosService = inject(UsuariosService);
   private router = inject(Router);
+
+  // Modo admin (dashboard/usuarios): el mismo formulario, pero
+  // - muestra los radio buttons para elegir el perfil
+  // - crea el usuario con POST /usuarios (NO inicia sesión con él)
+  // - avisa al padre con (creado) en vez de navegar
+  modoAdmin = input(false);
+  creado = output<Usuario>();
 
   protected readonly maxDescripcion = 200;
   protected readonly maxImagenMB = 5;
@@ -61,6 +71,8 @@ export class Registro {
       ),
       descripcion: ['', [Validators.maxLength(this.maxDescripcion)]],
       imagenPerfil: [null as File | null, [archivoImagen(this.maxImagenMB)]],
+      // Sólo se usa en modo admin (radio buttons)
+      perfil: ['usuario' as 'usuario' | 'administrador'],
     },
     { validators: camposIguales('password', 'repetirPassword') },
   );
@@ -127,30 +139,51 @@ export class Registro {
 
     this.enviando.set(true);
     const v = this.form.getRawValue();
+    const datos: RegistroDatos = {
+      nombre: v.nombre!.trim(),
+      apellido: v.apellido!.trim(),
+      email: v.email!.trim(),
+      nombreUsuario: v.nombreUsuario!.trim(),
+      password: v.password!,
+      fechaNacimiento: this.fechaIso(),
+      descripcion: v.descripcion?.trim() || undefined,
+      imagenPerfil: v.imagenPerfil,
+    };
 
-    this.auth
-      .registrar({
-        nombre: v.nombre!.trim(),
-        apellido: v.apellido!.trim(),
-        email: v.email!.trim(),
-        nombreUsuario: v.nombreUsuario!.trim(),
-        password: v.password!,
-        fechaNacimiento: this.fechaIso(),
-        descripcion: v.descripcion?.trim() || undefined,
-        imagenPerfil: v.imagenPerfil,
-      })
-      .subscribe({
-        next: () => {
-          this.enviando.set(false);
-          // Pasa por la pantalla de cargando (spinner + /auth/autorizar) antes de ir a publicaciones
-          this.router.navigate(['/cargando']);
-        },
-        error: (err: HttpErrorResponse) => {
-          this.enviando.set(false);
-          // 409: el back avisa qué campo está repetido ("Ya existe un usuario con ese email")
-          this.errorServidor.set(mensajeDeError(err, 'No se pudo completar el registro'));
-        },
-      });
+    if (this.modoAdmin()) {
+      this.crearComoAdmin(datos, v.perfil ?? 'usuario');
+      return;
+    }
+
+    this.auth.registrar(datos).subscribe({
+      next: () => {
+        this.enviando.set(false);
+        // Pasa por la pantalla de cargando (spinner + /auth/autorizar) antes de ir a publicaciones
+        this.router.navigate(['/cargando']);
+      },
+      error: (err: HttpErrorResponse) => {
+        this.enviando.set(false);
+        // 409: el back avisa qué campo está repetido ("Ya existe un usuario con ese email")
+        this.errorServidor.set(mensajeDeError(err, 'No se pudo completar el registro'));
+      },
+    });
+  }
+
+  // Alta hecha por un administrador: POST /usuarios con el perfil elegido
+  private crearComoAdmin(datos: RegistroDatos, perfil: 'usuario' | 'administrador') {
+    this.usuariosService.crear(datos, perfil).subscribe({
+      next: (usuario) => {
+        this.enviando.set(false);
+        // Deja el formulario vacío para cargar otro
+        this.form.reset({ perfil: 'usuario' });
+        this.limpiarPreview();
+        this.creado.emit(usuario);
+      },
+      error: (err: HttpErrorResponse) => {
+        this.enviando.set(false);
+        this.errorServidor.set(mensajeDeError(err, 'No se pudo crear el usuario'));
+      },
+    });
   }
 
   private limpiarPreview() {

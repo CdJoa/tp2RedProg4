@@ -32,14 +32,54 @@
     </form>
   } @else {
     <p>{{ actual().mensaje }}</p>
-    @if (esMio()) {
-      <!-- Lápiz en un cuadradito blanco, arriba a la derecha -->
-      <button type="button" class="editar-boton" title="Editar comentario" aria-label="Editar comentario" (click)="empezarEdicion()">
-        <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
-          <path d="M11.5 1.5 14.5 4.5 5 14H2v-3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
-          <path d="M9.5 3.5l3 3" stroke="currentColor" stroke-width="1.5" />
-        </svg>
-      </button>
+    <!-- Herramientas arriba a la derecha: lápiz (sólo el autor) y tacho (autor o admin) -->
+    @if (esMio() || puedeEliminar()) {
+      <div class="herramientas">
+        @if (esMio()) {
+          <button type="button" class="herramienta" title="Editar comentario" aria-label="Editar comentario" (click)="empezarEdicion()">
+            <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M11.5 1.5 14.5 4.5 5 14H2v-3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+              <path d="M9.5 3.5l3 3" stroke="currentColor" stroke-width="1.5" />
+            </svg>
+          </button>
+        }
+        @if (puedeEliminar()) {
+          <button type="button" class="herramienta borrar" title="Eliminar comentario" aria-label="Eliminar comentario" (click)="confirmandoEliminar.set(true)">
+            <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path d="M2.5 4h11M6 4V2.5h4V4M4 4l.7 9.5h6.6L12 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+              <path d="M6.7 6.5v5M9.3 6.5v5" stroke="currentColor" stroke-width="1.3" />
+            </svg>
+          </button>
+        }
+      </div>
     }
   }
 </div>
+
+<!-- Confirmación para eliminar (modal, sin confirm() nativo) -->
+@if (confirmandoEliminar()) {
+  <div class="modal-fondo" role="dialog" aria-modal="true">
+    <div class="tarjeta modal-tarjeta">
+      <h1>Eliminar comentario</h1>
+      @if (esMio()) {
+        <p class="modal-texto">¿Estás seguro de que querés eliminar tu comentario?</p>
+      } @else {
+        <!-- Admin borrando el comentario de otro -->
+        <p class="modal-texto">
+          Vas a eliminar el comentario de &#64;{{ actual().usuario.nombreUsuario }} como administrador. ¿Continuar?
+        </p>
+      }
+      @if (errorEliminar()) {
+        <p class="error-servidor">{{ errorEliminar() }}</p>
+      }
+      <div class="modal-acciones">
+        <button type="button" class="boton" [disabled]="eliminando()" (click)="confirmandoEliminar.set(false); errorEliminar.set(null)">
+          Cancelar
+        </button>
+        <button type="button" class="principal" [disabled]="eliminando()" (click)="confirmarEliminar()">
+          {{ eliminando() ? 'Eliminando...' : 'Eliminar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

@@ -8,6 +8,7 @@ export interface Usuario {
   descripcion: string;
   imagenPerfil: string;
   perfil: 'usuario' | 'administrador';
+  activo?: boolean; // false = deshabilitado por un admin (los viejos no lo tienen)
   createdAt: string;
   updatedAt: string;
 }
