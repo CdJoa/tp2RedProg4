@@ -1,6 +1,7 @@
 <main class="contenedor">
-  <!-- zumbido: el formulario tiembla en cada intento fallido (como el MSN) -->
-  <form class="tarjeta" [formGroup]="form" (ngSubmit)="enviar()" novalidate [zumbido]="intentosFallidos()">
+  <!-- zumbido: en cada intento fallido tiembla toda la pantalla y suena, como el MSN -->
+  <form class="tarjeta" [formGroup]="form" (ngSubmit)="enviar()" novalidate
+        [zumbido]="intentosFallidos()" [zumbidoPantalla]="true">
     <h1>Iniciar sesión</h1>
 
     @if (sesionVencida) {
