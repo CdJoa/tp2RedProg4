@@ -1,6 +1,6 @@
 <section class="publicaciones">
   <button type="button" class="nueva-boton" (click)="mostrarFormulario.set(!mostrarFormulario())">
-    {{ mostrarFormulario() ? 'Cancelar' : '+ Nueva publicación' }}
+    {{ mostrarFormulario() ? 'Cancelar' : '+ Nueva transmisión' }}
   </button>
 
   @if (mostrarFormulario()) {
@@ -24,7 +24,7 @@
   @if (cargando()) {
     <div class="cargando-bloque" role="status">
       <div class="spinner chico" aria-hidden="true"></div>
-      <p>Cargando publicaciones...</p>
+      <p>Sintonizando transmisiones...</p>
     </div>
   } @else if (error()) {
     <p class="aviso error">{{ error() }}</p>
@@ -32,7 +32,7 @@
     @for (publicacion of publicaciones(); track publicacion._id) {
       <app-publicacion [publicacion]="publicacion" (eliminada)="alEliminar()" />
     } @empty {
-      <p class="aviso">Todavía no hay publicaciones.</p>
+      <p class="aviso">La radio está en silencio... Todavía no hay transmisiones.</p>
     }
 
     @if (totalPaginas() > 1) {

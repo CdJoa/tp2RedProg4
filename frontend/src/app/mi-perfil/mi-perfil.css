@@ -13,20 +13,20 @@
   padding: 0.9rem 1rem;
   border: 1px solid rgb(255 255 255 / 0.7);
   border-radius: 8px;
-  background: linear-gradient(to bottom, rgb(255 255 255 / 0.85), rgb(230 241 251 / 0.75) 50%, rgb(205 225 245 / 0.75) 51%, rgb(225 238 250 / 0.85));
-  box-shadow: 0 8px 22px rgb(0 30 70 / 0.35);
+  background: linear-gradient(to bottom, rgb(255 255 255 / 0.85), rgb(247 243 234 / 0.75) 50%, rgb(238 231 212 / 0.75) 51%, rgb(245 241 230 / 0.85));
+  box-shadow: 0 8px 22px rgb(51 40 19 / 0.35);
   backdrop-filter: blur(4px);
 }
 
 .encabezado h1 {
   margin: 0;
   font-size: 1.5rem;
-  color: #0b3c6e;
+  color: #534426;
 }
 
 .usuario {
   margin: 0.15rem 0 0;
-  color: #4f6478;
+  color: #676e59;
 }
 
 .foto-editable {
@@ -42,7 +42,7 @@
   border-radius: 6px;
   object-fit: cover;
   border: 3px solid white;
-  box-shadow: 0 0 0 1px #7a9ec7, 0 3px 8px rgb(0 40 90 / 0.4);
+  box-shadow: 0 0 0 1px #a7b48d, 0 3px 8px rgb(65 52 25 / 0.4);
 }
 
 /* Texto que aparece encima de la foto al pasar el mouse */
@@ -54,7 +54,7 @@
   justify-content: center;
   text-align: center;
   border-radius: 4px;
-  background: linear-gradient(to bottom, rgb(30 110 190 / 0.75), rgb(10 60 120 / 0.85));
+  background: linear-gradient(to bottom, rgb(123 150 70 / 0.75), rgb(90 73 40 / 0.85));
   color: white;
   font-size: 0.8rem;
   font-weight: 600;
@@ -69,7 +69,7 @@
 }
 
 .foto-editable:hover .foto {
-  box-shadow: 0 0 0 1px #3c7fb1, 0 0 12px rgb(80 180 255 / 0.9);
+  box-shadow: 0 0 0 1px #809459, 0 0 12px rgb(182 211 124 / 0.9);
 }
 
 .foto-editable.subiendo {
@@ -79,10 +79,10 @@
 /* Datos personales en una "ventana" con barra de título */
 .datos {
   padding: 0 1.25rem 0.75rem;
-  background: #fdfeff;
-  border: 1px solid #5b8fc7;
+  background: #fefefe;
+  border: 1px solid #9aac76;
   border-radius: 8px;
-  box-shadow: 0 8px 22px rgb(0 30 70 / 0.35);
+  box-shadow: 0 8px 22px rgb(51 40 19 / 0.35);
 }
 
 .datos::before {
@@ -92,9 +92,9 @@
   padding: 0.45rem 0.9rem;
   color: white;
   font-weight: 600;
-  text-shadow: 0 1px 2px rgb(0 40 90 / 0.7);
-  background: linear-gradient(to bottom, #9fd2f7 0%, #64b1ec 45%, #2f8bd9 50%, #4aa2e6 100%);
-  border-bottom: 1px solid #0b3c6e;
+  text-shadow: 0 1px 2px rgb(65 52 25 / 0.7);
+  background: var(--brillo-titulo);
+  border-bottom: 1px solid #534426;
 }
 
 .datos p {
@@ -102,15 +102,15 @@
 }
 
 .datos strong {
-  color: #0b3c6e;
+  color: #534426;
 }
 
-/* Título sobre el fondo azul */
+/* Título sobre el fondo oscuro */
 h2 {
   margin: 2rem 0 1rem;
   font-size: 1.3rem;
   color: white;
-  text-shadow: 0 1px 3px rgb(0 30 70 / 0.8);
+  text-shadow: 0 1px 3px rgb(51 40 19 / 0.8);
 }
 
 .mis-publicaciones {
@@ -121,5 +121,5 @@ h2 {
 
 .aviso {
   color: white;
-  text-shadow: 0 1px 3px rgb(0 30 70 / 0.8);
+  text-shadow: 0 1px 3px rgb(51 40 19 / 0.8);
 }

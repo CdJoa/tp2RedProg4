@@ -1,7 +1,7 @@
 
 /* Radio buttons del perfil (sólo en modo admin) */
 .perfil {
-  border: 1px solid #c3d6ea;
+  border: 1px solid #dae0cd;
   border-radius: 4px;
   padding: 0.5rem 0.75rem;
   flex-direction: row;
@@ -12,7 +12,7 @@
 .perfil legend {
   padding: 0 0.3rem;
   font-weight: 600;
-  color: var(--azul-oscuro);
+  color: var(--oliva-oscuro);
 }
 
 .perfil label {

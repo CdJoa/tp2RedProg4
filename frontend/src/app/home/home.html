@@ -1,7 +1,8 @@
 <!-- Sólo se llega logueado: sin sesión, el authGuard manda al login -->
 @if (auth.usuarioActual(); as usuario) {
   <section class="home">
-    <h1>Hola, {{ usuario.nombre }}!</h1>
+    <h1>Bienvenido al refugio, {{ usuario.nombre }}</h1>
+    <p class="subtitulo">📻 Noticias, parches y reportes del servidor</p>
     <app-publicaciones />
   </section>
 }

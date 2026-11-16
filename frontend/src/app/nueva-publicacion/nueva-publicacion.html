@@ -1,7 +1,7 @@
 <form class="nueva" [formGroup]="form" (ngSubmit)="enviar(inputImagen)" novalidate>
   <div class="campo">
     <label for="titulo">Título</label>
-    <input id="titulo" type="text" formControlName="titulo" [class.invalido]="mostrarError(c.titulo)" />
+    <input id="titulo" type="text" formControlName="titulo" placeholder="Ej: Parche 1.3 · Nuevos mods de vehículos" [class.invalido]="mostrarError(c.titulo)" />
     @if (mostrarError(c.titulo)) {
       @if (c.titulo.errors?.['maxlength']) {
         <small class="error">Máximo 100 caracteres</small>
@@ -13,7 +13,7 @@
 
   <div class="campo">
     <label for="descripcion">Descripción</label>
-    <textarea id="descripcion" formControlName="descripcion" rows="3" [class.invalido]="mostrarError(c.descripcion)"></textarea>
+    <textarea id="descripcion" formControlName="descripcion" rows="3" placeholder="Qué cambia, cuándo se aplica o qué viste en Knox..." [class.invalido]="mostrarError(c.descripcion)"></textarea>
     @if (mostrarError(c.descripcion)) {
       @if (c.descripcion.errors?.['maxlength']) {
         <small class="error">Máximo 1000 caracteres</small>

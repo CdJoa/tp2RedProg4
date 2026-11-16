@@ -6,14 +6,20 @@ import { Auth } from '../servicios/auth';
 import { sinEspaciosVacios } from '../validadores/validadores';
 import { ErrorLoginPipe } from '../pipes/error-login-pipe';
 import { Zumbido } from '../directivas/zumbido';
+import { SERVIDOR } from '../servidor';
+import { EstadoServidor } from '../servicios/estado-servidor';
+import { EstadoServidorPipe } from '../pipes/estado-servidor-pipe';
+import { LuzServidor } from '../directivas/luz-servidor';
 
 @Component({
-  imports: [ReactiveFormsModule, RouterLink, ErrorLoginPipe, Zumbido],
+  imports: [ReactiveFormsModule, RouterLink, ErrorLoginPipe, Zumbido, EstadoServidorPipe, LuzServidor],
   selector: 'app-login',
   styleUrl: './login.css',
   templateUrl: './login.html',
 })
 export class Login {
+  protected servidor = SERVIDOR;
+  protected estado = inject(EstadoServidor);
   private fb = inject(FormBuilder);
   private auth = inject(Auth);
   private router = inject(Router);

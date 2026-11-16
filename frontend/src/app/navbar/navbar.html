@@ -1,7 +1,13 @@
 <nav class="navbar">
   <a class="marca" routerLink="/publicaciones">
     <img class="logo" src="logo.png" alt="" />
-    Conecta2s
+    <!-- Nombre del server + IP (ficticia) y estado: luzServidor la pinta de verde o amarillo -->
+    <span class="marca-texto">
+      {{ servidor.nombre }}
+      <small class="servidor-ip" [luzServidor]="estado.online()">
+        ● {{ servidor.ip }}:{{ servidor.puerto }} (IP ficticia) · {{ estado.online() | estadoServidor }}
+      </small>
+    </span>
   </a>
 
   <div class="links">

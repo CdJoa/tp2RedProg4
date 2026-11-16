@@ -2,7 +2,22 @@
   <!-- zumbido: en cada intento fallido tiembla toda la pantalla y suena, como el MSN -->
   <form class="tarjeta" [formGroup]="form" (ngSubmit)="enviar()" novalidate
         [zumbido]="intentosFallidos()" [zumbidoPantalla]="true">
-    <h1>Iniciar sesión</h1>
+    <h1>Ingresar al servidor</h1>
+
+    <!-- Ficha del server, como en el buscador de servidores del juego -->
+    <div class="servidor-info">
+      <img src="logo.png" alt="" />
+      <div class="servidor-datos">
+        <strong>{{ servidor.nombre }}</strong>
+        <span>IP: <code [luzServidor]="estado.online()">{{ servidor.ip }}:{{ servidor.puerto }}</code> <em class="ficticia">(IP ficticia)</em></span>
+        <span class="detalle">{{ servidor.modo }} · {{ servidor.version }} · 📍 {{ servidor.ubicacion }}</span>
+        @if (!estado.online()) {
+          <span class="aviso-mantenimiento">🛠️ {{ estado.online() | estadoServidor: estado.desde() : 'largo' }}</span>
+        }
+      </div>
+      <!-- luzServidor: verde si está online, amarillo si está en mantenimiento -->
+      <span class="estado" [luzServidor]="estado.online()">● {{ estado.online() ? 'Online' : 'Offline' }}</span>
+    </div>
 
     @if (sesionVencida) {
       <p class="error-servidor">Tu sesión expiró. Volvé a iniciar sesión.</p>

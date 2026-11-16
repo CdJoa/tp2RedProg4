@@ -1,10 +1,10 @@
 import { Component, ElementRef, effect, input, viewChild } from '@angular/core';
 import Chart, { ChartType } from 'chart.js/auto';
 
-// Colores de la página (azules) + algunos de contraste para las tortas
+// Paleta Knox Avellaneda: oliva, óxido, mostaza, sangre... (distinguibles entre sí para las tortas)
 const COLORES = [
-  '#1f6fb8', '#6db3ec', '#0b3c6e', '#e0b44c', '#d9578a',
-  '#45a3e8', '#8fd19e', '#9fd2f7', '#c42b1c', '#7a9ec7',
+  '#556b2f', '#a0522d', '#c9a227', '#8b1e1e', '#7a8f45',
+  '#6b4f2a', '#b5a77a', '#3e4a2a', '#d07a2d', '#8c8c6a',
 ];
 
 // Envuelve Chart.js: le pasás el tipo, las etiquetas y los valores, y dibuja el gráfico.
@@ -24,7 +24,7 @@ export class Grafico {
   // Sólo barras: true = barras acostadas (las etiquetas largas se leen mejor)
   horizontal = input(false);
   // Color principal de barras/líneas (las tortas usan la paleta)
-  color = input('#1f6fb8');
+  color = input('#556b2f');
 
   private lienzo = viewChild.required<ElementRef<HTMLCanvasElement>>('lienzo');
   private grafico?: Chart;

@@ -15,14 +15,14 @@
   padding: 0.4rem 0.6rem;
   border: 1px solid rgb(255 255 255 / 0.7);
   border-radius: 6px;
-  background: linear-gradient(to bottom, rgb(255 255 255 / 0.85), rgb(230 241 251 / 0.75) 50%, rgb(205 225 245 / 0.75) 51%, rgb(225 238 250 / 0.8));
-  box-shadow: 0 4px 12px rgb(0 30 70 / 0.25);
+  background: linear-gradient(to bottom, rgb(255 255 255 / 0.85), rgb(247 243 234 / 0.75) 50%, rgb(238 231 212 / 0.75) 51%, rgb(245 241 230 / 0.8));
+  box-shadow: 0 4px 12px rgb(51 40 19 / 0.25);
 }
 
 .titulo {
   margin-right: auto;
   font-weight: 700;
-  color: var(--azul-oscuro);
+  color: var(--oliva-oscuro);
 }
 
 .pestanias a {
@@ -36,13 +36,13 @@
 
 .pestanias a:hover {
   background: var(--brillo-boton-hover);
-  box-shadow: 0 0 6px rgb(80 170 240 / 0.6);
+  box-shadow: 0 0 6px rgb(173 200 120 / 0.6);
 }
 
-/* Pestaña elegida: azul brillante */
+/* Pestaña elegida: verde militar brillante */
 .pestanias a.activa {
   color: white;
-  border-color: #1d5f9e;
+  border-color: #687e3d;
   background: var(--brillo-principal);
-  text-shadow: 0 1px 1px rgb(0 40 90 / 0.6);
+  text-shadow: 0 1px 1px rgb(65 52 25 / 0.6);
 }

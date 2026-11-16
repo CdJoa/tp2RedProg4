@@ -14,6 +14,7 @@ export interface Publicacion {
     apellido: string;
     nombreUsuario: string;
     imagenPerfil: string;
+    perfil?: 'usuario' | 'administrador'; // para la directiva anuncioOficial
   };
 }
 

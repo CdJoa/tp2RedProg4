@@ -12,12 +12,12 @@ export class ErrorLoginPipe implements PipeTransform {
 
     switch (error.status) {
       case 0:
-        return '📡 No se pudo conectar con el servidor. Revisá tu conexión.';
+        return '📡 Sin señal: no se pudo conectar con el servidor. Revisá tu conexión.';
       case 401:
         return '🔑 Usuario o contraseña incorrectos.';
       case 403:
         // El back responde 403 cuando un administrador deshabilitó la cuenta
-        return '⛔ Tu cuenta fue bloqueada por un administrador. No podés ingresar.';
+        return '💀 Así es como moriste. Fuiste baneado del servidor por el staff.';
       case 400: {
         // Datos inválidos: se muestra lo que explica el back
         const mensaje = error.error?.message;

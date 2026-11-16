@@ -8,6 +8,7 @@ import { Cargando } from './cargando/cargando';
 import { PaginaPublicacion } from './pagina-publicacion/pagina-publicacion';
 import { Panel } from './panel/panel';
 import { DashboardUsuarios } from './dashboard-usuarios/dashboard-usuarios';
+import { DashboardMantenimiento } from './dashboard-mantenimiento/dashboard-mantenimiento';
 import { authGuard } from './guards/auth-guard';
 import { adminGuard } from './guards/admin-guard';
 
@@ -34,6 +35,7 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./dashboard-estadisticas/dashboard-estadisticas').then((m) => m.DashboardEstadisticas),
       },
+      { path: 'mantenimiento', component: DashboardMantenimiento },
     ],
   },
 ];

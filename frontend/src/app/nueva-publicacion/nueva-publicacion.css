@@ -4,13 +4,13 @@
   flex-direction: column;
   gap: 1rem;
   padding: 0 1.25rem 1.25rem;
-  background: #fdfeff;
-  border: 1px solid #5b8fc7;
+  background: #fefefe;
+  border: 1px solid #9aac76;
   border-radius: 8px;
   overflow: hidden;
   box-shadow:
     0 0 0 1px rgb(255 255 255 / 0.6) inset,
-    0 8px 22px rgb(0 30 70 / 0.35);
+    0 8px 22px rgb(51 40 19 / 0.35);
 }
 
 .nueva::before {
@@ -20,7 +20,7 @@
   padding: 0.45rem 0.9rem;
   color: white;
   font-weight: 600;
-  text-shadow: 0 1px 2px rgb(0 40 90 / 0.7);
-  background: linear-gradient(to bottom, #9fd2f7 0%, #64b1ec 45%, #2f8bd9 50%, #4aa2e6 100%);
-  border-bottom: 1px solid #0b3c6e;
+  text-shadow: 0 1px 2px rgb(65 52 25 / 0.7);
+  background: var(--brillo-titulo);
+  border-bottom: 1px solid #534426;
 }

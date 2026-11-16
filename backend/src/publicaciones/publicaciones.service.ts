@@ -69,7 +69,7 @@ export class PublicacionesService {
       .sort(ordenamiento)
       .skip(offset) // saltea las primeras "offset"
       .limit(limit) // y trae como máximo "limit"
-      .populate('usuario', 'nombre apellido nombreUsuario imagenPerfil')
+      .populate('usuario', 'nombre apellido nombreUsuario imagenPerfil perfil')
       .exec();
 
     // total: cuántas hay en total con ese filtro (para saber cuántas páginas hay)
@@ -81,7 +81,7 @@ export class PublicacionesService {
   // GET /publicaciones/:id  → devuelve la publicación con los datos del autor
   async findOne(id: string) {
     const publicacion = await this.buscarActiva(id);
-    return publicacion.populate('usuario', 'nombre apellido nombreUsuario imagenPerfil');
+    return publicacion.populate('usuario', 'nombre apellido nombreUsuario imagenPerfil perfil');
   }
 
   // GET /publicaciones/:id/comentarios?offset=0&limit=5
@@ -100,7 +100,7 @@ export class PublicacionesService {
         .sort({ createdAt: -1 })
         .skip(offset)
         .limit(limit)
-        .populate('usuario', 'nombre apellido nombreUsuario imagenPerfil')
+        .populate('usuario', 'nombre apellido nombreUsuario imagenPerfil perfil')
         .exec(),
       this.comentarioModel.countDocuments(filtro),
     ]);
@@ -116,7 +116,7 @@ export class PublicacionesService {
       usuario: usuarioId,
       mensaje: mensaje.trim(),
     });
-    return comentario.populate('usuario', 'nombre apellido nombreUsuario imagenPerfil');
+    return comentario.populate('usuario', 'nombre apellido nombreUsuario imagenPerfil perfil');
   }
 
   // PUT /publicaciones/:id/comentarios/:comentarioId  → edita el mensaje y marca modificado: true
@@ -147,7 +147,7 @@ export class PublicacionesService {
     comentario.modificado = true;
     await comentario.save();
 
-    return comentario.populate('usuario', 'nombre apellido nombreUsuario imagenPerfil');
+    return comentario.populate('usuario', 'nombre apellido nombreUsuario imagenPerfil perfil');
   }
 
   // DELETE /publicaciones/:id/comentarios/:comentarioId  → baja lógica (el autor o un administrador)

@@ -1,4 +1,5 @@
-<article class="publicacion">
+<!-- anuncioOficial: si el autor es admin, la tarjeta se vuelve un comunicado del staff -->
+<article class="publicacion" [anuncioOficial]="publicacion().usuario.perfil" [anuncioTitulo]="publicacion().titulo">
   <header class="autor">
     <!-- Sin foto, o si la imagen no carga: cuadradito "404" -->
     @if (publicacion().usuario.imagenPerfil && !fotoFallo()) {

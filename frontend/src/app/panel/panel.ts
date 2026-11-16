@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 // Panel de administración (/dashboard): pestañas + la página elegida abajo.
-// Las páginas son rutas hijas: /dashboard/usuarios y /dashboard/estadisticas
+// Las páginas son rutas hijas: /dashboard/usuarios, /dashboard/estadisticas y /dashboard/mantenimiento
 @Component({
   imports: [RouterLink, RouterLinkActive, RouterOutlet],
   selector: 'app-panel',

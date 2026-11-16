@@ -1,0 +1,173 @@
+.dashboard {
+  max-width: 760px;
+  width: 100%;
+  margin: 0.75rem auto 2rem;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-sizing: border-box;
+}
+
+/* Barra de vidrio claro (igual que en la pestaña Usuarios) */
+.barra {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgb(255 255 255 / 0.7);
+  border-radius: 6px;
+  background: linear-gradient(to bottom, rgb(255 255 255 / 0.85), rgb(247 243 234 / 0.75) 50%, rgb(238 231 212 / 0.75) 51%, rgb(245 241 230 / 0.8));
+  box-shadow: 0 4px 12px rgb(51 40 19 / 0.25);
+}
+
+.barra h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--oliva-oscuro);
+}
+
+.resumen {
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+}
+
+.tarjeta-mantenimiento {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  background: #fefefe;
+  border: 1px solid var(--borde-ventana);
+  border-radius: 8px;
+  box-shadow: 0 8px 22px rgb(51 40 19 / 0.35);
+}
+
+.botones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+@media (max-width: 560px) {
+  .botones {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Botones grandes tipo "interruptor" con franja de color a la izquierda */
+.boton-mantenimiento {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid;
+  border-left-width: 6px;
+  border-radius: 6px;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.7) inset, 0 2px 6px rgb(51 40 19 / 0.2);
+  transition: filter 0.15s, box-shadow 0.15s;
+}
+
+.boton-mantenimiento > span:last-child {
+  display: flex;
+  flex-direction: column;
+}
+
+.boton-mantenimiento .icono {
+  font-size: 1.6rem;
+}
+
+.boton-mantenimiento small {
+  color: var(--texto-suave);
+}
+
+/* Iniciar: mostaza (aviso de peligro) */
+.boton-mantenimiento.inicio {
+  border-color: #c9a227;
+  background: linear-gradient(to bottom, #fff9e3, #f5e7b5);
+  color: #5a4300;
+}
+
+.boton-mantenimiento.inicio:hover {
+  box-shadow: 0 0 10px rgb(201 162 39 / 0.6);
+}
+
+/* Finalizar: verde (todo en orden) */
+.boton-mantenimiento.fin {
+  border-color: #5a7a2e;
+  background: linear-gradient(to bottom, #f3f8e8, #dce8c2);
+  color: #2f4214;
+}
+
+.boton-mantenimiento.fin:hover {
+  box-shadow: 0 0 10px rgb(110 150 60 / 0.6);
+}
+
+.aviso-ok {
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  color: #1d6b2f;
+  background: #e5f7e8;
+  border: 1px solid #8fd19e;
+  border-radius: 4px;
+}
+
+.aviso-ok a {
+  margin-left: 0.4rem;
+  font-weight: 700;
+}
+
+/* Modal un poco más ancho para que entre la vista previa */
+.vista-previa-modal {
+  max-width: 520px;
+}
+
+/* La vista previa imita el papel del comunicado oficial */
+.vista-previa {
+  max-height: 45vh;
+  overflow-y: auto;
+  padding: 0.6rem 0.8rem;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.85rem;
+  background: #f6f0dc;
+  border: 1px dashed #b9a66a;
+  border-radius: 3px;
+}
+
+.vista-previa p {
+  margin: 0.4rem 0 0;
+  white-space: pre-line;
+}
+
+/* Estado actual (directiva luzServidor) */
+.estado-actual {
+  margin-left: auto;
+  padding: 0.2rem 0.6rem;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.estado-actual.luz-online {
+  color: #1d6b2f;
+  background: #e5f7e8;
+  border: 1px solid #8fd19e;
+}
+
+.estado-actual.luz-offline {
+  color: #7a5a00;
+  background: #fff6d6;
+  border: 1px solid #e0b84f;
+}
+
+/* El botón que no corresponde al estado actual queda apagado */
+.boton-mantenimiento:disabled {
+  opacity: 0.45;
+  filter: grayscale(0.6);
+  cursor: not-allowed;
+  box-shadow: none;
+}

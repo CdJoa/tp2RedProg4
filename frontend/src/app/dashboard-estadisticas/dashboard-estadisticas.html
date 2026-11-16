@@ -56,7 +56,7 @@
     <ng-container *ngTemplateOutlet="estado; context: { $implicit: porPublicacion, vacio: porPublicacionValores().length === 0 }" />
     @if (!porPublicacion.cargando() && !porPublicacion.error() && porPublicacionValores().length > 0) {
       <p class="resumen">{{ porPublicacionValores().length }} publicaciones comentadas</p>
-      <app-grafico tipo="bar" [horizontal]="true" color="#45a3e8" [etiquetas]="porPublicacionEtiquetas()" [valores]="porPublicacionValores()" serie="Comentarios" />
+      <app-grafico tipo="bar" [horizontal]="true" color="#7a8f45" [etiquetas]="porPublicacionEtiquetas()" [valores]="porPublicacionValores()" serie="Comentarios" />
     }
   </article>
 
@@ -67,7 +67,7 @@
     <ng-container *ngTemplateOutlet="estado; context: { $implicit: usuarios, vacio: (usuarios.datos()?.total ?? 0) === 0 }" />
     @if (!usuarios.cargando() && !usuarios.error() && (usuarios.datos()?.total ?? 0) > 0) {
       <p class="resumen">{{ usuarios.datos()?.total }} usuarios nuevos en el lapso</p>
-      <app-grafico tipo="bar" color="#2e9e5b" [etiquetas]="usuariosEtiquetas()" [valores]="usuariosValores()" serie="Usuarios nuevos" />
+      <app-grafico tipo="bar" color="#a0522d" [etiquetas]="usuariosEtiquetas()" [valores]="usuariosValores()" serie="Usuarios nuevos" />
     }
   </article>
 </section>

@@ -19,7 +19,7 @@
         [formControl]="mensaje"
         rows="3"
         maxlength="500"
-        placeholder="Escribí un comentario..."
+        placeholder="Respondé a la transmisión..."
       ></textarea>
       <div class="fila-enviar">
         <span class="contador">{{ mensaje.value.length }}/500</span>
@@ -39,7 +39,7 @@
       <app-comentario-item [comentario]="comentario" (eliminado)="alEliminarComentario($event)" />
     } @empty {
       @if (!cargandoComentarios()) {
-        <p class="aviso">Todavía no hay comentarios. ¡Sé el primero!</p>
+        <p class="aviso">Todavía no hay comentarios. ¡Sé el primer superviviente en responder!</p>
       }
     }
 

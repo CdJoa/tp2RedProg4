@@ -18,47 +18,47 @@
   padding: 0.4rem 0.6rem;
   border: 1px solid rgb(255 255 255 / 0.7);
   border-radius: 6px;
-  background: linear-gradient(to bottom, rgb(255 255 255 / 0.85), rgb(230 241 251 / 0.75) 50%, rgb(205 225 245 / 0.75) 51%, rgb(225 238 250 / 0.8));
-  box-shadow: 0 4px 12px rgb(0 30 70 / 0.25);
+  background: linear-gradient(to bottom, rgb(255 255 255 / 0.85), rgb(247 243 234 / 0.75) 50%, rgb(238 231 212 / 0.75) 51%, rgb(245 241 230 / 0.8));
+  box-shadow: 0 4px 12px rgb(51 40 19 / 0.25);
   backdrop-filter: blur(4px);
 }
 
 .orden span {
-  color: #0b3c6e;
+  color: #534426;
   font-weight: 600;
   margin-right: 0.2rem;
 }
 
 .paginacion {
   justify-content: center;
-  color: #0b3c6e;
+  color: #534426;
 }
 
 /* Botones con brillo */
 .orden button,
 .paginacion button {
   padding: 0.25rem 0.8rem;
-  border: 1px solid #7a9ec7;
+  border: 1px solid #a7b48d;
   border-radius: 3px;
-  background: linear-gradient(to bottom, #ffffff 0%, #eef5fc 48%, #d9e8f7 50%, #e9f3fd 100%);
+  background: linear-gradient(to bottom, #ffffff 0%, #f9f7f1 48%, #f2edde 50%, #f8f5ee 100%);
   font: inherit;
-  color: #1b2a3a;
+  color: #312d24;
   cursor: pointer;
   box-shadow: 0 1px 0 rgb(255 255 255 / 0.8) inset;
 }
 
 .orden button:hover,
 .paginacion button:hover:not(:disabled) {
-  border-color: #3c7fb1;
-  background: linear-gradient(to bottom, #f2faff 0%, #d8f0fd 48%, #b7e1fb 50%, #cfeafd 100%);
-  box-shadow: 0 0 6px rgb(80 170 240 / 0.6);
+  border-color: #809459;
+  background: linear-gradient(to bottom, #fbfaf6 0%, #f4efe1 48%, #eae1c8 50%, #f1ebdb 100%);
+  box-shadow: 0 0 6px rgb(173 200 120 / 0.6);
 }
 
 /* Orden elegido: botón "hundido" */
 .orden button.activo {
-  border-color: #2c628b;
-  background: linear-gradient(to bottom, #c4e5f6 0%, #98d1ef 48%, #68b3db 50%, #8fcbe9 100%);
-  box-shadow: 0 1px 3px rgb(0 40 90 / 0.5) inset;
+  border-color: #637344;
+  background: linear-gradient(to bottom, #ece4ce 0%, #cbd9ae 48%, #abbe85 50%, #c3d2a6 100%);
+  box-shadow: 0 1px 3px rgb(65 52 25 / 0.5) inset;
   font-weight: 600;
 }
 
@@ -71,37 +71,37 @@
   cursor: not-allowed;
 }
 
-/* Textos sueltos sobre el fondo azul */
+/* Textos sueltos sobre el fondo oscuro */
 .aviso {
   text-align: center;
   color: white;
-  text-shadow: 0 1px 3px rgb(0 30 70 / 0.8);
+  text-shadow: 0 1px 3px rgb(51 40 19 / 0.8);
 }
 
 .error {
   color: #ffd2cc;
 }
 
-/* "Nueva publicación": el botón principal azul brillante */
+/* "Nueva publicación": el botón principal verde militar */
 .nueva-boton {
   align-self: flex-end;
   padding: 0.5rem 1.2rem;
-  border: 1px solid #165a96;
+  border: 1px solid #617636;
   border-radius: 4px;
-  background: linear-gradient(to bottom, #8fd0fa 0%, #45a3e8 48%, #1d7fd2 50%, #3d9ae4 100%);
+  background: var(--brillo-principal);
   color: white;
   font: inherit;
   font-weight: 700;
-  text-shadow: 0 1px 2px rgb(0 40 90 / 0.6);
+  text-shadow: 0 1px 2px rgb(65 52 25 / 0.6);
   cursor: pointer;
   box-shadow:
     0 1px 0 rgb(255 255 255 / 0.6) inset,
-    0 2px 6px rgb(0 60 130 / 0.35);
+    0 2px 6px rgb(94 75 36 / 0.35);
 }
 
 .nueva-boton:hover {
   filter: brightness(1.08) saturate(1.1);
   box-shadow:
     0 1px 0 rgb(255 255 255 / 0.6) inset,
-    0 0 10px rgb(80 180 255 / 0.8);
+    0 0 10px rgb(182 211 124 / 0.8);
 }

@@ -1,12 +1,12 @@
-/* Cada comentario es una "respuesta" con una rayita celeste a la izquierda */
+/* Cada comentario es una "respuesta" con una rayita verde a la izquierda */
 .comentario {
   position: relative;
   padding: 0.5rem 0.75rem;
-  background: #eef5fc;
-  border: 1px solid #c3d6ea;
-  border-left: 3px solid #6db3ec;
+  background: #f9f7f1;
+  border: 1px solid #dae0cd;
+  border-left: 3px solid #b7cc8d;
   border-radius: 4px;
-  box-shadow: 0 2px 6px rgb(0 30 70 / 0.2);
+  box-shadow: 0 2px 6px rgb(51 40 19 / 0.2);
 }
 
 /* Versión chica para la vista previa de la tarjeta */
@@ -18,11 +18,11 @@
 
 .detalle {
   font-size: 0.8rem;
-  color: #4f6478;
+  color: #676e59;
 }
 
 .detalle strong {
-  color: #0b3c6e;
+  color: #534426;
 }
 
 p {
@@ -49,15 +49,15 @@ p {
   border: 1px solid var(--borde-control);
   border-radius: 3px;
   background: var(--brillo-boton);
-  color: var(--azul);
+  color: var(--oliva);
   cursor: pointer;
   box-shadow: 0 1px 0 rgb(255 255 255 / 0.8) inset;
 }
 
 .herramienta:hover {
-  border-color: #3c7fb1;
+  border-color: #809459;
   background: var(--brillo-boton-hover);
-  box-shadow: 0 0 6px rgb(80 170 240 / 0.6);
+  box-shadow: 0 0 6px rgb(173 200 120 / 0.6);
 }
 
 /* Tacho: rojo, con brillo rojizo al pasar el mouse */
@@ -83,7 +83,7 @@ p {
   width: 100%;
   box-sizing: border-box;
   padding: 0.4rem;
-  border: 1px solid #7a9ec7;
+  border: 1px solid #a7b48d;
   border-radius: 3px;
   font: inherit;
   resize: vertical;
@@ -91,8 +91,8 @@ p {
 
 .editar textarea:focus {
   outline: none;
-  border-color: #3c7fb1;
-  box-shadow: 0 0 6px rgb(80 170 240 / 0.6);
+  border-color: #809459;
+  box-shadow: 0 0 6px rgb(173 200 120 / 0.6);
 }
 
 .fila-enviar {
@@ -103,7 +103,7 @@ p {
 
 .contador {
   font-size: 0.8rem;
-  color: #4f6478;
+  color: #676e59;
 }
 
 .botones-edicion {

@@ -1,0 +1,67 @@
+<section class="dashboard">
+  <div class="barra">
+    <h2>Mantenimiento del servidor</h2>
+    <span class="resumen">Cada botón publica un comunicado oficial en el foro</span>
+    <!-- Estado actual del servidor: pipe estadoServidor (texto) + directiva luzServidor (color) -->
+    <span class="estado-actual" [luzServidor]="estado.online()">
+      ● {{ estado.online() | estadoServidor: estado.desde() : 'largo' }}
+    </span>
+  </div>
+
+  <div class="tarjeta-mantenimiento">
+    <div class="campo">
+      <label for="detalle">Detalle <span class="opcional">(opcional: motivo, duración o cambios aplicados)</span></label>
+      <textarea id="detalle" [formControl]="detalle" rows="3" maxlength="400"
+                placeholder="Ej: actualización de mods de vehículos, aprox. 2 horas"></textarea>
+      <span class="contador">{{ detalle.value.length }}/400</span>
+    </div>
+
+    <div class="botones">
+      <!-- Sólo se puede iniciar si está online, y finalizar si está en mantenimiento -->
+      <button type="button" class="boton-mantenimiento inicio" [disabled]="!estado.online()" (click)="preparar('inicio')">
+        <span class="icono">🛠️</span>
+        <span>
+          <strong>Iniciar mantenimiento</strong>
+          <small>Avisa que el servidor se apaga</small>
+        </span>
+      </button>
+      <button type="button" class="boton-mantenimiento fin" [disabled]="estado.online()" (click)="preparar('fin')">
+        <span class="icono">✅</span>
+        <span>
+          <strong>Finalizar mantenimiento</strong>
+          <small>Avisa que el servidor volvió</small>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  @if (publicado(); as p) {
+    <p class="aviso-ok">
+      {{ p.tipo === 'inicio' ? 'Se anunció el inicio del mantenimiento.' : 'Se anunció que el servidor volvió a estar en línea.' }}
+      <a [routerLink]="['/publicacion', p.id]">Ver publicación »</a>
+    </p>
+  }
+  @if (error()) {
+    <p class="error-servidor">{{ error() }}</p>
+  }
+</section>
+
+<!-- Confirmación con vista previa del comunicado (modal, sin confirm() nativo) -->
+@if (aConfirmar(); as comunicado) {
+  <div class="modal-fondo" role="dialog" aria-modal="true">
+    <div class="tarjeta modal-tarjeta vista-previa-modal">
+      <h1>{{ comunicado.tipo === 'inicio' ? 'Anunciar inicio de mantenimiento' : 'Anunciar fin de mantenimiento' }}</h1>
+      <p class="modal-texto">Se va a publicar en el foro:</p>
+      <div class="vista-previa">
+        <strong>{{ comunicado.titulo }}</strong>
+        <p>{{ comunicado.descripcion }}</p>
+      </div>
+      <div class="modal-acciones">
+        <button type="button" class="boton" [disabled]="publicando()" (click)="aConfirmar.set(null)">Cancelar</button>
+        <button type="button" class="principal" [disabled]="publicando()" (click)="confirmar()">
+          {{ publicando() ? 'Publicando...' : 'Publicar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

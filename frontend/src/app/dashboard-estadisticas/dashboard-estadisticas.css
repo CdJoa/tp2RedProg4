@@ -15,13 +15,13 @@
   flex-direction: column;
   gap: 0.6rem;
   padding: 0 1rem 1rem;
-  background: #fdfeff;
+  background: #fefefe;
   border: 1px solid var(--borde-ventana);
   border-radius: 8px;
   overflow: hidden;
   box-shadow:
     0 0 0 1px rgb(255 255 255 / 0.6) inset,
-    0 8px 22px rgb(0 30 70 / 0.35);
+    0 8px 22px rgb(51 40 19 / 0.35);
 }
 
 .tarjeta-grafico h3 {
@@ -29,9 +29,9 @@
   padding: 0.5rem 1rem;
   font-size: 1rem;
   color: white;
-  text-shadow: 0 1px 2px rgb(0 40 90 / 0.7);
+  text-shadow: 0 1px 2px rgb(65 52 25 / 0.7);
   background: var(--brillo-titulo);
-  border-bottom: 1px solid var(--azul-oscuro);
+  border-bottom: 1px solid var(--oliva-oscuro);
 }
 
 /* Desde / hasta */
@@ -46,7 +46,7 @@
   align-items: center;
   gap: 0.4rem;
   font-weight: 600;
-  color: var(--azul-oscuro);
+  color: var(--oliva-oscuro);
 }
 
 .rango input {
@@ -59,8 +59,8 @@
 
 .rango input:focus {
   outline: none;
-  border-color: #3c7fb1;
-  box-shadow: 0 0 6px rgb(80 170 240 / 0.6);
+  border-color: #809459;
+  box-shadow: 0 0 6px rgb(173 200 120 / 0.6);
 }
 
 .resumen {
@@ -74,7 +74,7 @@
   padding: 1.5rem;
   text-align: center;
   color: var(--texto-suave);
-  background: #eef5fc;
-  border: 1px dashed #b9d2ea;
+  background: #f9f7f1;
+  border: 1px dashed #d6dec5;
   border-radius: 4px;
 }

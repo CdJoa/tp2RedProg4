@@ -1,12 +1,12 @@
 /* Cada publicación es una "ventanita" */
 .publicacion {
-  background: #fdfeff;
-  border: 1px solid #5b8fc7;
+  background: #fefefe;
+  border: 1px solid #9aac76;
   border-radius: 8px;
   overflow: hidden;
   box-shadow:
     0 0 0 1px rgb(255 255 255 / 0.6) inset,
-    0 8px 22px rgb(0 30 70 / 0.35);
+    0 8px 22px rgb(51 40 19 / 0.35);
 }
 
 /* El autor va en la "barra de título" brillante */
@@ -16,9 +16,9 @@
   gap: 0.75rem;
   padding: 0.45rem 0.75rem;
   color: white;
-  text-shadow: 0 1px 2px rgb(0 40 90 / 0.7);
-  background: linear-gradient(to bottom, #9fd2f7 0%, #64b1ec 45%, #2f8bd9 50%, #4aa2e6 100%);
-  border-bottom: 1px solid #0b3c6e;
+  text-shadow: 0 1px 2px rgb(65 52 25 / 0.7);
+  background: var(--brillo-titulo);
+  border-bottom: 1px solid #534426;
 }
 
 .autor div {
@@ -34,17 +34,17 @@
   border-radius: 5px;
   object-fit: cover;
   border: 2px solid white;
-  box-shadow: 0 0 0 1px rgb(0 50 110 / 0.5), 0 1px 4px rgb(0 30 70 / 0.5);
+  box-shadow: 0 0 0 1px rgb(80 63 30 / 0.5), 0 1px 4px rgb(51 40 19 / 0.5);
 }
 
 .autor .detalle {
-  color: #e3f2ff;
+  color: #f7f4eb;
 }
 
 .publicacion h2 {
   margin: 0.75rem 1rem 0.25rem;
   font-size: 1.05rem;
-  color: #0b3c6e;
+  color: #534426;
 }
 
 .publicacion p {
@@ -58,9 +58,9 @@
   max-height: 480px;
   margin: 0 1rem 0.75rem;
   object-fit: cover;
-  border: 1px solid #b9d2ea;
+  border: 1px solid #d6dec5;
   border-radius: 4px;
-  box-shadow: 0 2px 6px rgb(0 30 70 / 0.2);
+  box-shadow: 0 2px 6px rgb(51 40 19 / 0.2);
 }
 
 .detalle {
@@ -73,25 +73,25 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.45rem 0.75rem;
-  background: linear-gradient(to bottom, #f4f8fc, #dfe9f4);
-  border-top: 1px solid #c3d6ea;
+  background: linear-gradient(to bottom, #fbf9f5, #f2ede1);
+  border-top: 1px solid #dae0cd;
 }
 
 /* Botones con brillo */
 .acciones button {
   padding: 0.25rem 0.85rem;
-  border: 1px solid #7a9ec7;
+  border: 1px solid #a7b48d;
   border-radius: 3px;
-  background: linear-gradient(to bottom, #ffffff 0%, #eef5fc 48%, #d9e8f7 50%, #e9f3fd 100%);
+  background: linear-gradient(to bottom, #ffffff 0%, #f9f7f1 48%, #f2edde 50%, #f8f5ee 100%);
   font: inherit;
   cursor: pointer;
   box-shadow: 0 1px 0 rgb(255 255 255 / 0.8) inset;
 }
 
 .acciones button:hover:not(:disabled) {
-  border-color: #3c7fb1;
-  background: linear-gradient(to bottom, #f2faff 0%, #d8f0fd 48%, #b7e1fb 50%, #cfeafd 100%);
-  box-shadow: 0 0 6px rgb(80 170 240 / 0.6);
+  border-color: #809459;
+  background: linear-gradient(to bottom, #fbfaf6 0%, #f4efe1 48%, #eae1c8 50%, #f1ebdb 100%);
+  box-shadow: 0 0 6px rgb(173 200 120 / 0.6);
 }
 
 /* Me gusta ya dado: botón rosa brillante */
@@ -128,7 +128,7 @@
 .ver-hilo {
   align-self: flex-start;
   font-size: 0.85rem;
-  color: #1f6fb8;
+  color: #789245;
   text-decoration: none;
 }
 
@@ -145,16 +145,52 @@
 /* Link con la misma pinta que los botones de la barra */
 .boton-comentar {
   padding: 0.25rem 0.85rem;
-  border: 1px solid #7a9ec7;
+  border: 1px solid #a7b48d;
   border-radius: 3px;
-  background: linear-gradient(to bottom, #ffffff 0%, #eef5fc 48%, #d9e8f7 50%, #e9f3fd 100%);
+  background: linear-gradient(to bottom, #ffffff 0%, #f9f7f1 48%, #f2edde 50%, #f8f5ee 100%);
   color: inherit;
   text-decoration: none;
   box-shadow: 0 1px 0 rgb(255 255 255 / 0.8) inset;
 }
 
 .boton-comentar:hover {
-  border-color: #3c7fb1;
-  background: linear-gradient(to bottom, #f2faff 0%, #d8f0fd 48%, #b7e1fb 50%, #cfeafd 100%);
-  box-shadow: 0 0 6px rgb(80 170 240 / 0.6);
+  border-color: #809459;
+  background: linear-gradient(to bottom, #fbfaf6 0%, #f4efe1 48%, #eae1c8 50%, #f1ebdb 100%);
+  box-shadow: 0 0 6px rgb(173 200 120 / 0.6);
+}
+
+/* ---------- Comunicado oficial del staff (directiva anuncioOficial) ---------- */
+/* Borde mostaza con brillo, como un cartel de aviso pegado en la pared */
+.publicacion.anuncio-oficial {
+  border: 2px solid #c9a227;
+  box-shadow:
+    0 0 0 1px rgb(255 240 190 / 0.5) inset,
+    0 0 18px rgb(201 162 39 / 0.45),
+    0 8px 22px rgb(30 22 8 / 0.5);
+}
+
+/* Barra del autor más oscura: marrón tierra en vez de verde */
+.anuncio-oficial .autor {
+  background: linear-gradient(to bottom, #5c4a2c 0%, #46371f 48%, #33281a 50%, #3d3020 100%);
+  border-bottom: 1px solid #c9a227;
+}
+
+/* Cuerpo como hoja de papel viejo con renglones, escrita a máquina */
+.anuncio-oficial h2 {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.15rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #2b2619;
+}
+
+.anuncio-oficial p {
+  padding: 0.6rem 0.8rem;
+  font-family: 'Courier New', Courier, monospace;
+  line-height: 1.5;
+  background:
+    repeating-linear-gradient(to bottom, transparent 0, transparent calc(1.5em - 1px), rgb(120 100 60 / 0.18) 1.5em),
+    #f6f0dc;
+  border: 1px dashed #b9a66a;
+  border-radius: 3px;
 }

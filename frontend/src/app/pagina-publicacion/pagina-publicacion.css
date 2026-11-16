@@ -12,7 +12,7 @@
   align-self: flex-start;
   color: white;
   text-decoration: none;
-  text-shadow: 0 1px 2px rgb(0 40 90 / 0.7);
+  text-shadow: 0 1px 2px rgb(65 52 25 / 0.7);
 }
 
 .volver:hover {
@@ -22,7 +22,7 @@
 .aviso {
   color: white;
   text-align: center;
-  text-shadow: 0 1px 2px rgb(0 40 90 / 0.7);
+  text-shadow: 0 1px 2px rgb(65 52 25 / 0.7);
 }
 
 /* Caja para escribir: misma "ventanita" que las tarjetas */
@@ -31,17 +31,17 @@
   flex-direction: column;
   gap: 0.4rem;
   padding: 0.75rem;
-  background: #fdfeff;
-  border: 1px solid #5b8fc7;
+  background: #fefefe;
+  border: 1px solid #9aac76;
   border-radius: 8px;
-  box-shadow: 0 8px 22px rgb(0 30 70 / 0.35);
+  box-shadow: 0 8px 22px rgb(51 40 19 / 0.35);
 }
 
 .nuevo-comentario textarea {
   width: 100%;
   box-sizing: border-box;
   padding: 0.5rem;
-  border: 1px solid #7a9ec7;
+  border: 1px solid #a7b48d;
   border-radius: 3px;
   font: inherit;
   resize: vertical;
@@ -49,8 +49,8 @@
 
 .nuevo-comentario textarea:focus {
   outline: none;
-  border-color: #3c7fb1;
-  box-shadow: 0 0 6px rgb(80 170 240 / 0.6);
+  border-color: #809459;
+  box-shadow: 0 0 6px rgb(173 200 120 / 0.6);
 }
 
 .fila-enviar {
@@ -61,13 +61,13 @@
 
 .contador {
   font-size: 0.8rem;
-  color: #4f6478;
+  color: #676e59;
 }
 
 .titulo-hilo {
   margin: 0.5rem 0 0;
   color: white;
-  text-shadow: 0 1px 2px rgb(0 40 90 / 0.7);
+  text-shadow: 0 1px 2px rgb(65 52 25 / 0.7);
 }
 
 .cargar-mas {

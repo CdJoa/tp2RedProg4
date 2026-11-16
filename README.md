@@ -1,6 +1,10 @@
-# Conecta2s · Red Social
+# Knox Avellaneda · Foro de un Servidor de Project Zomboid
 
-Red social desarrollada para el **TP #2 de Programación IV**. Los usuarios publican con imagen opcional, dan "me gusta", comentan y editan sus comentarios, y administran su perfil. Los administradores tienen un panel para gestionar usuarios (alta, baja y alta lógica) y ver estadísticas con gráficos. La aplicación está dividida en dos proyectos: un **frontend en Angular** y un **backend en NestJS** con **MongoDB**. La autenticación usa **JWT**.
+Red social desarrollada para el **TP #2 de Programación IV**. Simula ser el **foro de la comunidad de un servidor (ficticio) de Project Zomboid**, ambientado en Avellaneda: el staff publica parches, eventos y avisos de mantenimiento, y los jugadores ("supervivientes") comentan y opinan.
+
+Los usuarios publican con imagen opcional, dan "me gusta", comentan y editan sus comentarios, y administran su perfil. Los administradores tienen un panel para gestionar usuarios (alta, baja y alta lógica), ver estadísticas con gráficos y anunciar el inicio y el fin del mantenimiento del servidor. La aplicación está dividida en dos proyectos: un **frontend en Angular** y un **backend en NestJS** con **MongoDB**. La autenticación usa **JWT**.
+
+> La IP del servidor que se muestra en la página (`203.0.113.47:16261`) es **ficticia**: pertenece a un rango reservado para ejemplos (RFC 5737) y no apunta a ningún servidor real.
 
 - **Frontend en producción:** [URL_DEL_FRONT](URL_DEL_FRONT) <!-- TODO: completar con la URL de Vercel del front -->
 - **Backend en producción:** [https://backend-sandy-chi-84.vercel.app](https://backend-sandy-chi-84.vercel.app)
@@ -14,14 +18,14 @@ Red social desarrollada para el **TP #2 de Programación IV**. Los usuarios publ
 ## Capturas de Pantalla
 
 ### 1. Inicio de Sesión y Registro (`/login` y `/registro`)
-Formularios reactivos con validaciones y mensajes en cada campo. El login acepta correo o nombre de usuario. La contraseña pide al menos 8 caracteres, una mayúscula y un número. El registro incluye foto de perfil con vista previa y fecha de nacimiento con validación de edad mínima. Si el login falla, el formulario **tiembla** como el zumbido del MSN (directiva `zumbido`) y el mensaje se arma según el tipo de error (pipe `errorLogin`).
+Formularios reactivos con validaciones y mensajes en cada campo. El login acepta correo o nombre de usuario y muestra la **ficha del servidor** (nombre, IP ficticia y estado). La contraseña pide al menos 8 caracteres, una mayúscula y un número. El registro incluye foto de perfil con vista previa y fecha de nacimiento con validación de edad mínima. Si el login falla, **tiembla toda la pantalla y suena un "bzzz"** como el zumbido del MSN (directiva `zumbido`), y el mensaje se arma según el tipo de error (pipe `errorLogin`). Si un administrador deshabilitó la cuenta, el mensaje es *"💀 Así es como moriste. Fuiste baneado del servidor por el staff."*
 ![Iniciar Sesión](docs/screenshots/01-login.png)
 ![Registro de Usuario](docs/screenshots/02-registro.png)
 
 ---
 
 ### 2. Pantalla de Carga (`/cargando`)
-Al iniciar la aplicación se muestra un spinner mientras se valida el token guardado contra `POST /auth/autorizar`. Si es válido, redirige a publicaciones; si no, al login.
+Al iniciar la aplicación se muestra un spinner ("Sintonizando la frecuencia del servidor...") mientras se valida el token guardado contra `POST /auth/autorizar`. Si es válido, redirige a publicaciones; si no, al login.
 ![Pantalla de Carga](docs/screenshots/03-cargando.png)
 
 ---
@@ -31,6 +35,8 @@ Listado paginado con orden por fecha o por cantidad de "me gusta" (ascendente o 
 - Botón de me gusta, que se puede dar y quitar.
 - Vista previa de los últimos 3 comentarios, con aviso de "N comentarios más · Ver hilo completo".
 - Botón para eliminar, visible para el autor o un administrador.
+
+**Comunicados del staff:** si el autor es administrador, la directiva `anuncioOficial` convierte la tarjeta en un comunicado oficial: cinta con franjas de peligro, borde mostaza y texto a máquina de escribir. La cinta se elige según el título: 🔧 *Notas del parche*, 🚁 *Evento del servidor*, ⚠️ *Aviso de mantenimiento*, ✅ *Servidor en línea* o 📢 *Comunicado oficial*. Las publicaciones de los usuarios comunes mantienen el estilo normal.
 
 ![Listado de Publicaciones](docs/screenshots/04-publicaciones.png)
 
@@ -55,7 +61,7 @@ El token vence a los 15 minutos. El reloj del navbar muestra el tiempo restante 
 ---
 
 ### 7. Panel de Administración (`/dashboard`)
-Solo para usuarios con perfil **administrador**. Se accede desde **"Panel"** en el navbar y tiene dos pestañas.
+Solo para usuarios con perfil **administrador**. Se accede desde **"Panel"** en el navbar y tiene tres pestañas.
 
 <table>
   <tr>
@@ -76,6 +82,26 @@ Solo para usuarios con perfil **administrador**. Se accede desde **"Panel"** en 
 
 ---
 
+### 8. Mantenimiento del Servidor (`/dashboard/mantenimiento`)
+Pestaña del panel con dos botones: **🛠️ Iniciar mantenimiento** y **✅ Finalizar mantenimiento**. Cada uno publica en el foro un comunicado del staff (con un detalle opcional: motivo, duración o cambios), después de confirmarlo en un modal con la vista previa. Sólo está habilitado el botón que corresponde al estado actual.
+
+El estado del servidor se deduce del último comunicado de mantenimiento publicado por un administrador (`GET /servidor/estado`, pública). Mientras dura el mantenimiento, **el navbar y la ficha del login pasan a amarillo y "Offline"** (directiva `luzServidor` + pipe `estadoServidor`). El front consulta el estado al cargar, cada 30 segundos y apenas el admin publica.
+
+<table>
+  <tr>
+    <td width="50%">
+      <b>Panel de mantenimiento</b> · servidor online<br><br>
+      <img src="docs/screenshots/10-panel-mantenimiento.png" alt="Panel de Mantenimiento">
+    </td>
+    <td width="50%">
+      <b>Login durante el mantenimiento</b> · servidor offline<br><br>
+      <img src="docs/screenshots/11-login-mantenimiento.png" alt="Login en mantenimiento">
+    </td>
+  </tr>
+</table>
+
+---
+
 ## Tecnologías Utilizadas
 
 | Capa / Área | Tecnología | Propósito en el Sistema |
@@ -85,7 +111,7 @@ Solo para usuarios con perfil **administrador**. Se accede desde **"Panel"** en 
 | **Formularios** | **Reactive Forms** | Validadores propios (contraseña fuerte, coincidencia de contraseñas, fecha de nacimiento, archivo de imagen). |
 | **Gráficos** | **Chart.js 4** | Gráficos de torta, líneas y barras del panel de estadísticas. Se carga de forma diferida (lazy) para no agrandar el bundle inicial. |
 | **PWA** | **@angular/service-worker** | Aplicación instalable con manifest e íconos propios, y caché del código de la app. |
-| **Backend Framework** | **NestJS 12** | Módulos de Autenticación, Usuarios y Publicaciones, con controllers de publicaciones, comentarios y estadísticas. |
+| **Backend Framework** | **NestJS 12** | Módulos de Autenticación, Usuarios y Publicaciones, con controllers de publicaciones, comentarios, estadísticas y estado del servidor. |
 | **Base de Datos** | **MongoDB Atlas + Mongoose 9** | Colecciones de usuarios, publicaciones y comentarios. Las estadísticas se calculan con `aggregate`. |
 | **Autenticación** | **JWT (`@nestjs/jwt`)** | El token lleva el id, el correo, el nombre de usuario y el rol, y vence a los 15 minutos. Hay rutas para autorizar y refrescar. |
 | **Contraseñas** | **scrypt (`@nestjs/authentication`)** | Las contraseñas se guardan encriptadas. |
@@ -101,11 +127,11 @@ Solo para usuarios con perfil **administrador**. Se accede desde **"Panel"** en 
 | Tipo | Nombre | Qué hace | Dónde se usa |
 | :--- | :--- | :--- | :--- |
 | Pipe | `tiempoRestante` | Convierte segundos en formato reloj `MM:SS`. | Reloj de sesión del navbar. |
-| Pipe | `errorLogin` | Convierte el error del login en un mensaje según el status (🔑 credenciales, ⛔ cuenta bloqueada, 📡 sin conexión…). | Login. |
-| Pipe | *(pendiente)* | | |
-| Directiva | `zumbido` | Hace temblar el elemento como el zumbido del MSN cada vez que cambia el valor que recibe. | Formulario de login cuando falla. |
-| Directiva | *(pendiente)* | | |
-| Directiva | *(pendiente)* | | |
+| Pipe | `errorLogin` | Convierte el error del login en un mensaje según el status (🔑 credenciales, 💀 cuenta baneada, 📡 sin conexión…). | Login. |
+| Pipe | `estadoServidor` | Convierte el estado del servidor en texto: `Online`, `Offline · Mantenimiento` o `En mantenimiento desde las 15:55`. | Navbar, login y pestaña Mantenimiento del panel. |
+| Directiva | `zumbido` | Hace temblar la pantalla y suena un "bzzz" como el zumbido del MSN cada vez que cambia el valor que recibe. | Formulario de login cuando falla. |
+| Directiva | `anuncioOficial` | Si el autor de la publicación es administrador, la convierte en un comunicado del staff: cinta con franjas de peligro, borde mostaza y texto a máquina. Elige la cinta según el título (🔧 parche, 🚁 evento, ⚠️ mantenimiento, ✅ servidor en línea, 📢 comunicado). | Tarjeta de publicación. |
+| Directiva | `luzServidor` | Agrega las clases `luz-online` / `luz-offline` para pintar el estado del servidor de verde (online) o amarillo (en mantenimiento), y un texto al pasar el mouse. | Navbar, login y pestaña Mantenimiento del panel. |
 
 ---
 
@@ -137,6 +163,7 @@ Las rutas marcadas con 🔒 requieren token (`Authorization: Bearer <token>`). L
 | `GET` | `/estadisticas/comentarios` 👑 | Comentarios por día en el lapso. |
 | `GET` | `/estadisticas/comentarios-por-publicacion` 👑 | Comentarios de cada publicación en el lapso. |
 | `GET` | `/estadisticas/usuarios` 👑 | Usuarios registrados por día en el lapso. |
+| `GET` | `/servidor/estado` | **Pública.** `{ online, desde }`: si el servidor está en mantenimiento, según el último comunicado de mantenimiento de un administrador. |
 
 ---
 
@@ -203,7 +230,7 @@ En desarrollo, el front apunta al back local (`src/environments/environment.deve
 
 | Rol | Correo / Usuario | Contraseña | Acceso |
 | :--- | :--- | :--- | :--- |
-| **Administrador** | `COMPLETAR` | `COMPLETAR` | Todo lo del usuario, más el **Panel** (usuarios y estadísticas) y la baja de cualquier publicación o comentario. |
+| **Administrador** | `COMPLETAR` | `COMPLETAR` | Todo lo del usuario, más el **Panel** (usuarios, estadísticas y mantenimiento), sus publicaciones se ven como comunicados del staff, y puede dar de baja cualquier publicación o comentario. |
 | **Usuario** | `test2@mail.com` | `Clave123` | Publicar, dar me gusta, comentar, editar sus comentarios y su perfil. |
 
 Para convertir una cuenta en administrador por primera vez, hay que cambiar en MongoDB el campo `perfil` del usuario a `"administrador"` y volver a iniciar sesión. Después, un administrador puede crear otros desde el panel.
@@ -244,13 +271,13 @@ tp2redProg4/
 │       ├── guards/
 │       │   ├── auth/               # AuthGuard: valida el JWT
 │       │   └── admin/              # AdminGuard: exige perfil administrador
-│       ├── publicaciones/          # Publicaciones, comentarios y estadísticas
+│       ├── publicaciones/          # Publicaciones, comentarios, estadísticas y estado del servidor
 │       │   ├── dto/
 │       │   └── entities/           # Publicacion y Comentario (Mongoose)
 │       ├── usuarios/               # Usuarios: foto de perfil y ABM del administrador
 │       └── main.ts                 # ValidationPipe global y CORS
 ├── frontend/                       # SPA en Angular
-│   ├── public/                     # Favicon, logo, íconos y manifest de la PWA
+│   ├── public/                     # Favicon, logo (zombie), íconos y manifest de la PWA
 │   └── src/app/
 │       ├── cargando/               # Pantalla de carga (valida el token)
 │       ├── login/ registro/        # Autenticación (registro reutilizado por el admin)
@@ -263,15 +290,17 @@ tp2redProg4/
 │       ├── panel/                  # Panel de administración (pestañas)
 │       ├── dashboard-usuarios/     # ABM de usuarios
 │       ├── dashboard-estadisticas/ # Gráficos con Chart.js
+│       ├── dashboard-mantenimiento/ # Anunciar inicio / fin del mantenimiento
 │       ├── grafico/                # Componente que envuelve Chart.js
-│       ├── navbar/                 # Navegación y reloj de sesión
-│       ├── directivas/             # Directivas propias (zumbido)
-│       ├── pipes/                  # Pipes propios (tiempoRestante, errorLogin)
+│       ├── navbar/                 # Navegación, estado del servidor y reloj de sesión
+│       ├── directivas/             # Directivas propias (zumbido, anuncioOficial, luzServidor)
+│       ├── pipes/                  # Pipes propios (tiempoRestante, errorLogin, estadoServidor)
 │       ├── guards/                 # authGuard y adminGuard
 │       ├── interceptores/          # Agrega el token y maneja los 401
-│       ├── servicios/              # Comunicación con la API
+│       ├── servicios/              # Comunicación con la API (y estado del servidor)
 │       ├── modelos/                # Interfaces (usuario, publicación, comentario)
-│       └── validadores/            # Validadores de formularios reutilizables
+│       ├── validadores/            # Validadores de formularios reutilizables
+│       └── servidor.ts             # Datos del servidor ficticio (nombre, IP, puerto)
 └── docs/
     └── screenshots/                # Capturas de pantalla de la aplicación
 ```

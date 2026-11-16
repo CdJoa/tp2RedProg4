@@ -1,7 +1,7 @@
 {
-  "name": "Conecta2s - Red social",
-  "short_name": "Conecta2s",
-  "description": "Red social del TP2 de Programación IV",
+  "name": "Knox Avellaneda - Servidor de Project Zomboid",
+  "short_name": "Knox Avellaneda",
+  "description": "Noticias, parches y comunidad del servidor de Project Zomboid (TP2 Programación IV)",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
