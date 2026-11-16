@@ -16,27 +16,8 @@
   padding: 1.25rem 0 0.5rem;
 }
 
-/* Spinner circular estilo Aero con brillo celeste */
-.spinner {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  border: 5px solid #cfe7fa;
-  border-top-color: var(--azul-oscuro);
-  border-right-color: var(--azul);
-  box-shadow: 0 0 12px rgb(31 111 184 / 0.45);
-  animation: girar 0.8s linear infinite;
-}
-
 .mensaje {
   margin: 0;
   color: var(--texto-suave);
   font-weight: 600;
 }
-
-@keyframes girar {
-  to {
-    transform: rotate(360deg);
-  }
-}
-

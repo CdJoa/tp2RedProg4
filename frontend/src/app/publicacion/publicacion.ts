@@ -5,13 +5,14 @@ import { Publicacion as PublicacionModelo } from '../modelos/publicacion';
 import { Auth } from '../servicios/auth';
 import { PublicacionesService } from '../servicios/publicaciones';
 import { Comentario } from '../modelos/comentario';
+import { ComentarioItem } from '../comentario-item/comentario-item';
 
 // Cuántos comentarios se muestran en la tarjeta (el resto, en el hilo completo)
 const COMENTARIOS_EN_TARJETA = 3;
 
 // Una publicación (tarjeta). La usan la lista de publicaciones y Mi Perfil.
 @Component({
-  imports: [DatePipe, RouterLink],
+  imports: [DatePipe, RouterLink, ComentarioItem],
   selector: 'app-publicacion',
   styleUrl: './publicacion.css',
   templateUrl: './publicacion.html',

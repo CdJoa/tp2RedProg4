@@ -77,11 +77,11 @@ export class PublicacionesController {
     return this.publicacionesService.findOne(id);
   }
 
-  // DELETE /publicaciones/:id  → baja lógica (sólo el autor)
+  // DELETE /publicaciones/:id  → baja lógica (el autor o un administrador)
   @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string, @Req() req: { user: { sub: string } }) {
-    return this.publicacionesService.remove(id, req.user.sub);
+  remove(@Param('id') id: string, @Req() req: { user: { sub: string; perfil: string } }) {
+    return this.publicacionesService.remove(id, req.user.sub, req.user.perfil);
   }
 
   // POST /publicaciones/:id/me-gusta

@@ -1,8 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUsuarioDto } from './dto/create-usuario.dto.js';
-import { UpdateUsuarioDto } from './dto/update-usuario.dto.js';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { isValidObjectId, Model } from 'mongoose';
 import { Usuario } from './entities/usuario.entity.js';
 import { BadRequestException, ConflictException } from '@nestjs/common';
 import { Error as MongooseError, mongo } from 'mongoose';
@@ -64,19 +63,20 @@ export class UsuariosService {
     return this.UsuarioModel.findById(id).exec();
   }
 
+  // GET /usuarios (admin): todos, los más nuevos primero (password no viene: select: false)
   async findAll() {
-    return this.UsuarioModel.find().exec();
+    return this.UsuarioModel.find().sort({ createdAt: -1 }).exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} usuario`;
-  }
-
-  update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
-    return `This action updates a #${id} usuario`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} usuario`;
+  // DELETE /usuarios/:id (admin) → activo: false   |   POST /usuarios/:id/habilitar → activo: true
+  async cambiarActivo(id: string, activo: boolean) {
+    if (!isValidObjectId(id)) {
+      throw new BadRequestException('El id de usuario no es válido');
+    }
+    const usuario = await this.UsuarioModel.findByIdAndUpdate(id, { activo }, { new: true }).exec();
+    if (!usuario) {
+      throw new NotFoundException('El usuario no existe');
+    }
+    return usuario;
   }
 }

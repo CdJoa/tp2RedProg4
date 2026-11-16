@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   DefaultValuePipe,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -58,5 +59,20 @@ export class ComentariosController {
       dto.mensaje,
     );
   }
-}
 
+  // DELETE /publicaciones/:id/comentarios/:comentarioId
+  // Baja lógica del comentario (sólo su autor o un administrador)
+  @Delete(':comentarioId')
+  eliminarComentario(
+    @Param('id') publicacionId: string,
+    @Param('comentarioId') comentarioId: string,
+    @Req() req: { user: { sub: string; perfil: string } },
+  ) {
+    return this.publicacionesService.eliminarComentario(
+      publicacionId,
+      comentarioId,
+      req.user.sub,
+      req.user.perfil,
+    );
+  }
+}

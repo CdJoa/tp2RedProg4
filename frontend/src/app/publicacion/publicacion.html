@@ -23,16 +23,7 @@
   @if (vistaPrevia() && totalComentarios() > 0) {
     <section class="comentarios">
       @for (comentario of comentarios(); track comentario._id) {
-        <div class="comentario">
-          <span class="detalle">
-            <strong>&#64;{{ comentario.usuario.nombreUsuario }}</strong>
-            · {{ comentario.createdAt | date: 'dd/MM/yyyy HH:mm' }}
-            @if (comentario.modificado) {
-              <em>(editado)</em>
-            }
-          </span>
-          <p>{{ comentario.mensaje }}</p>
-        </div>
+        <app-comentario-item [comentario]="comentario" [compacto]="true" />
       }
 
       <!-- Estilo imageboard: aviso de que el hilo sigue -->

@@ -1,0 +1,45 @@
+<div class="comentario" [class.compacto]="compacto()">
+  <span class="detalle">
+    @if (!compacto()) {
+      <strong>{{ actual().usuario.nombre }} {{ actual().usuario.apellido }}</strong>
+      &#64;{{ actual().usuario.nombreUsuario }}
+    } @else {
+      <strong>&#64;{{ actual().usuario.nombreUsuario }}</strong>
+    }
+    · {{ actual().createdAt | date: 'dd/MM/yyyy HH:mm' }}
+    @if (actual().modificado) {
+      <em>(editado)</em>
+    }
+  </span>
+
+  @if (editando()) {
+    <!-- Modo edición: el texto pasa a un textarea -->
+    <!-- (submit) + preventDefault: evita que el navegador recargue la página -->
+    <form class="editar" (submit)="$event.preventDefault(); guardar()">
+      <textarea [formControl]="texto" rows="2" maxlength="500"></textarea>
+      <div class="fila-enviar">
+        <span class="contador">{{ texto.value.length }}/500</span>
+        <div class="botones-edicion">
+          <button type="button" class="boton" [disabled]="guardando()" (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="principal" [disabled]="texto.invalid || guardando()">
+            {{ guardando() ? 'Guardando...' : 'Guardar' }}
+          </button>
+        </div>
+      </div>
+      @if (error()) {
+        <p class="error-servidor">{{ error() }}</p>
+      }
+    </form>
+  } @else {
+    <p>{{ actual().mensaje }}</p>
+    @if (esMio()) {
+      <!-- Lápiz en un cuadradito blanco, arriba a la derecha -->
+      <button type="button" class="editar-boton" title="Editar comentario" aria-label="Editar comentario" (click)="empezarEdicion()">
+        <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+          <path d="M11.5 1.5 14.5 4.5 5 14H2v-3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+          <path d="M9.5 3.5l3 3" stroke="currentColor" stroke-width="1.5" />
+        </svg>
+      </button>
+    }
+  }
+</div>

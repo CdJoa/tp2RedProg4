@@ -1,0 +1,96 @@
+/* Cada comentario es una "respuesta" con una rayita celeste a la izquierda */
+.comentario {
+  position: relative;
+  padding: 0.5rem 0.75rem;
+  background: #eef5fc;
+  border: 1px solid #c3d6ea;
+  border-left: 3px solid #6db3ec;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgb(0 30 70 / 0.2);
+}
+
+/* Versión chica para la vista previa de la tarjeta */
+.comentario.compacto {
+  padding: 0.35rem 0.6rem;
+  border-radius: 3px;
+  box-shadow: none;
+}
+
+.detalle {
+  font-size: 0.8rem;
+  color: #4f6478;
+}
+
+.detalle strong {
+  color: #0b3c6e;
+}
+
+p {
+  margin: 0.2rem 0 0;
+  padding-right: 2rem; /* que el texto largo no quede debajo del lápiz */
+  white-space: pre-line;
+}
+
+/* ---------- Lápiz: cuadradito blanco con brillo ---------- */
+.editar-boton {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.35rem;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid var(--borde-control);
+  border-radius: 3px;
+  background: var(--brillo-boton);
+  color: var(--azul);
+  cursor: pointer;
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.8) inset;
+}
+
+.editar-boton:hover {
+  border-color: #3c7fb1;
+  background: var(--brillo-boton-hover);
+  box-shadow: 0 0 6px rgb(80 170 240 / 0.6);
+}
+
+/* ---------- Modo edición ---------- */
+.editar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.35rem;
+}
+
+.editar textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.4rem;
+  border: 1px solid #7a9ec7;
+  border-radius: 3px;
+  font: inherit;
+  resize: vertical;
+}
+
+.editar textarea:focus {
+  outline: none;
+  border-color: #3c7fb1;
+  box-shadow: 0 0 6px rgb(80 170 240 / 0.6);
+}
+
+.fila-enviar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.contador {
+  font-size: 0.8rem;
+  color: #4f6478;
+}
+
+.botones-edicion {
+  display: flex;
+  gap: 0.4rem;
+}

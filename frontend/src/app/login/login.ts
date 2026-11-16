@@ -55,11 +55,9 @@ export class Login {
       },
       error: (err: HttpErrorResponse) => {
         this.enviando.set(false);
-        this.errorServidor.set(
-          err.status === 401
-            ? 'Usuario o contraseña incorrectos'
-            : mensajeDeError(err, 'No se pudo iniciar sesión'),
-        );
+        // Muestra el mensaje del back: "Usuario o contraseña incorrectos"
+        // o "Tu usuario está deshabilitado..." si un admin le dio de baja
+        this.errorServidor.set(mensajeDeError(err, 'No se pudo iniciar sesión'));
       },
     });
   }

@@ -30,6 +30,10 @@ export class Usuario {
 
     @Prop({ enum: ['usuario', 'administrador'], default: 'usuario' })
     perfil: string;
+
+    // Baja lógica: un administrador puede deshabilitarlo (false) y no podrá ingresar
+    @Prop({ default: true })
+    activo: boolean;
 }
 
 export const UsuarioSchema = SchemaFactory.createForClass(Usuario);

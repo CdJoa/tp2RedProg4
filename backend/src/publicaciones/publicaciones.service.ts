@@ -92,7 +92,8 @@ export class PublicacionesService {
       throw new BadRequestException('offset debe ser 0 o más, y limit entre 1 y 50');
     }
 
-    const filtro = { publicacion: publicacionId };
+    // Sólo los activos ($ne: false también incluye los comentarios viejos sin el campo)
+    const filtro = { publicacion: publicacionId, activo: { $ne: false } };
     const [comentarios, total] = await Promise.all([
       this.comentarioModel
         .find(filtro)
@@ -133,6 +134,7 @@ export class PublicacionesService {
     const comentario = await this.comentarioModel.findOne({
       _id: comentarioId,
       publicacion: publicacionId,
+      activo: { $ne: false },
     });
     if (!comentario) {
       throw new NotFoundException('El comentario no existe');
@@ -148,12 +150,46 @@ export class PublicacionesService {
     return comentario.populate('usuario', 'nombre apellido nombreUsuario imagenPerfil');
   }
 
-  // DELETE /publicaciones/:id  → baja lógica (sólo el autor)
-  async remove(id: string, usuarioId: string) {
+  // DELETE /publicaciones/:id/comentarios/:comentarioId  → baja lógica (el autor o un administrador)
+  async eliminarComentario(
+    publicacionId: string,
+    comentarioId: string,
+    usuarioId: string,
+    perfil: string,
+  ) {
+    await this.buscarActiva(publicacionId);
+    if (!isValidObjectId(comentarioId)) {
+      throw new BadRequestException('El id del comentario no es válido');
+    }
+
+    const comentario = await this.comentarioModel.findOne({
+      _id: comentarioId,
+      publicacion: publicacionId,
+      activo: { $ne: false },
+    });
+    if (!comentario) {
+      throw new NotFoundException('El comentario no existe');
+    }
+
+    const esAutor = comentario.usuario.toString() === usuarioId;
+    const esAdmin = perfil === 'administrador';
+    if (!esAutor && !esAdmin) {
+      throw new ForbiddenException('Sólo el autor o un administrador pueden eliminar el comentario');
+    }
+
+    comentario.activo = false;
+    await comentario.save();
+    return { message: 'Comentario eliminado' };
+  }
+
+  // DELETE /publicaciones/:id  → baja lógica (el autor o un administrador)
+  async remove(id: string, usuarioId: string, perfil: string) {
     const publicacion = await this.buscarActiva(id);
 
-    if (publicacion.usuario.toString() !== usuarioId) {
-      throw new ForbiddenException('Sólo el autor puede eliminar la publicación');
+    const esAutor = publicacion.usuario.toString() === usuarioId;
+    const esAdmin = perfil === 'administrador';
+    if (!esAutor && !esAdmin) {
+      throw new ForbiddenException('Sólo el autor o un administrador pueden eliminar la publicación');
     }
 
     // No se borra de la base: se marca como inactiva

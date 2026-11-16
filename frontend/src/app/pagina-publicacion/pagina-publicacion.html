@@ -4,7 +4,10 @@
   @if (error()) {
     <p class="aviso error">{{ error() }}</p>
   } @else if (!publicacion()) {
-    <p class="aviso">Cargando publicación...</p>
+    <div class="cargando-bloque" role="status">
+      <div class="spinner chico" aria-hidden="true"></div>
+      <p>Cargando publicación...</p>
+    </div>
   } @else {
     <!-- Misma tarjeta que en el listado, pero sin la vista previa de comentarios -->
     <app-publicacion [publicacion]="publicacion()!" [vistaPrevia]="false" (eliminada)="alEliminar()" />
@@ -33,47 +36,7 @@
     <h3 class="titulo-hilo">Comentarios ({{ totalComentarios() }})</h3>
 
     @for (comentario of comentarios(); track comentario._id) {
-      <div class="comentario">
-        <span class="detalle">
-          <strong>{{ comentario.usuario.nombre }} {{ comentario.usuario.apellido }}</strong>
-          &#64;{{ comentario.usuario.nombreUsuario }} · {{ comentario.createdAt | date: 'dd/MM/yyyy HH:mm' }}
-          @if (comentario.modificado) {
-            <em>(editado)</em>
-          }
-        </span>
-
-        @if (editandoId() === comentario._id) {
-          <!-- Modo edición: el texto pasa a un textarea -->
-          <form class="editar" (submit)="$event.preventDefault(); guardarEdicion(comentario)">
-            <textarea [formControl]="textoEdicion" rows="2" maxlength="500"></textarea>
-            <div class="fila-enviar">
-              <span class="contador">{{ textoEdicion.value.length }}/500</span>
-              <div class="botones-edicion">
-                <button type="button" class="boton" [disabled]="guardandoEdicion()" (click)="cancelarEdicion()">
-                  Cancelar
-                </button>
-                <button type="submit" class="principal" [disabled]="textoEdicion.invalid || guardandoEdicion()">
-                  {{ guardandoEdicion() ? 'Guardando...' : 'Guardar' }}
-                </button>
-              </div>
-            </div>
-            @if (errorEdicion()) {
-              <p class="error-servidor">{{ errorEdicion() }}</p>
-            }
-          </form>
-        } @else {
-          <p>{{ comentario.mensaje }}</p>
-          @if (esMio(comentario)) {
-            <!-- Botón con lápiz (arriba a la derecha del comentario) -->
-            <button type="button" class="editar-boton" title="Editar comentario" aria-label="Editar comentario" (click)="empezarEdicion(comentario)">
-              <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
-                <path d="M11.5 1.5 14.5 4.5 5 14H2v-3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
-                <path d="M9.5 3.5l3 3" stroke="currentColor" stroke-width="1.5" />
-              </svg>
-            </button>
-          }
-        }
-      </div>
+      <app-comentario-item [comentario]="comentario" />
     } @empty {
       @if (!cargandoComentarios()) {
         <p class="aviso">Todavía no hay comentarios. ¡Sé el primero!</p>

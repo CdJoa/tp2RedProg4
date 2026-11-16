@@ -28,6 +28,10 @@ export class AuthService {
     if (!valido || !usuario?.password) {
       throw new UnauthorizedException('Usuario o contraseña incorrectos');
     }
+    // Baja lógica: un administrador lo deshabilitó
+    if (usuario.activo === false) {
+      throw new UnauthorizedException('Tu usuario está deshabilitado. No estás autorizado a ingresar');
+    }
     // Si cambiaron los parámetros del hash desde que se guardó, se actualiza
     // ahora que tenemos la contraseña en texto plano.
     if (this.passwordHasher.needsRehash(usuario.password)) {
@@ -46,6 +50,9 @@ export class AuthService {
     if (!usuario) {
       throw new UnauthorizedException('El usuario no existe');
     }
+    if (usuario.activo === false) {
+      throw new UnauthorizedException('Tu usuario está deshabilitado');
+    }
     return usuario;
   }
 
@@ -56,6 +63,10 @@ export class AuthService {
     nombreUsuario: string;
     perfil: string;
   }) {
+    const usuario = await this.usuariosService.findById(payload.sub);
+    if (!usuario || usuario.activo === false) {
+      throw new UnauthorizedException('Tu usuario está deshabilitado');
+    }
     const nuevoPayload = {
       sub: payload.sub,
       email: payload.email,

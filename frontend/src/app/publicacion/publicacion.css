@@ -124,31 +124,6 @@
   gap: 0.4rem;
 }
 
-/* Cada comentario es una "respuesta" con una rayita a la izquierda */
-.comentario {
-  padding: 0.35rem 0.6rem;
-  background: #eef5fc;
-  border: 1px solid #c3d6ea;
-  border-left: 3px solid #6db3ec;
-  border-radius: 3px;
-}
-
-.comentario .detalle {
-  color: #4f6478;
-}
-
-.comentario .detalle strong {
-  color: #0b3c6e;
-}
-
-.comentario em {
-  color: #4f6478;
-}
-
-.publicacion .comentario p {
-  margin: 0.15rem 0 0;
-}
-
 /* "N comentarios más. Ver hilo completo »" */
 .ver-hilo {
   align-self: flex-start;

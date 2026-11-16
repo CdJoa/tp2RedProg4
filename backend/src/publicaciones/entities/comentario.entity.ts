@@ -18,6 +18,10 @@ export class Comentario {
   // Se pone en true cuando el autor edita el comentario (PUT)
   @Prop({ default: false })
   modificado: boolean;
+
+  // Baja lógica: al eliminar se pone en false en vez de borrarlo
+  @Prop({ default: true })
+  activo: boolean;
 }
 
 export const ComentarioSchema = SchemaFactory.createForClass(Comentario);

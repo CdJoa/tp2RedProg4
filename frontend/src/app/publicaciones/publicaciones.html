@@ -22,7 +22,10 @@
   </div>
 
   @if (cargando()) {
-    <p class="aviso">Cargando publicaciones...</p>
+    <div class="cargando-bloque" role="status">
+      <div class="spinner chico" aria-hidden="true"></div>
+      <p>Cargando publicaciones...</p>
+    </div>
   } @else if (error()) {
     <p class="aviso error">{{ error() }}</p>
   } @else {
