@@ -112,11 +112,13 @@ export class Auth {
     return this.http.post<{ access_token: string }>(`${this.apiUrl}/auth/refrescar`, {}).pipe(
       tap({
         next: ({ access_token }) => {
+          const ahora = Date.now();
           globalThis.localStorage?.setItem('token', access_token);
+          globalThis.localStorage?.setItem('tokenInicio', String(ahora));
           this.token.set(access_token);
           this.mostrarModalSesion.set(false);
           this.refrescandoSesion.set(false);
-          this.programarTemporizadores(access_token);
+          this.programarTemporizadores(access_token, ahora);
         },
         error: () => {
           this.refrescandoSesion.set(false);
@@ -148,7 +150,10 @@ export class Auth {
     if (!token) return 0;
     try {
       const payload = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
-      return payload.exp * 1000 - Date.now();
+      const duracionTotal = payload.iat ? (payload.exp - payload.iat) * 1000 : 15 * 60 * 1000;
+      const inicioGuardado = Number(globalThis.localStorage?.getItem('tokenInicio'));
+      const vence = inicioGuardado ? inicioGuardado + duracionTotal : payload.exp * 1000;
+      return vence - Date.now();
     } catch {
       return 0;
     }
@@ -177,6 +182,7 @@ export class Auth {
     this.segundosRestantes.set(0);
     this.enTiempoDeAviso.set(false);
     globalThis.localStorage?.removeItem('token');
+    globalThis.localStorage?.removeItem('tokenInicio');
     globalThis.localStorage?.removeItem('usuario');
     this.token.set(null);
     this.usuarioActual.set(null);
@@ -190,13 +196,15 @@ export class Auth {
   }
 
   private guardarSesion(access_token: string, usuario: Usuario) {
+    const ahora = Date.now();
     globalThis.localStorage?.setItem('token', access_token);
+    globalThis.localStorage?.setItem('tokenInicio', String(ahora));
     globalThis.localStorage?.setItem('usuario', JSON.stringify(usuario));
     this.token.set(access_token);
     this.usuarioActual.set(usuario);
     this.sesionValidada.set(true);
     this.mostrarModalSesion.set(false);
-    this.programarTemporizadores(access_token);
+    this.programarTemporizadores(access_token, ahora);
   }
 
   private limpiarTemporizadores() {
@@ -208,15 +216,16 @@ export class Auth {
   // Lee la duración del token ("exp" - "iat") y programa el modal a los 2/3 del tiempo:
   // - Si el token es de 15 minutos -> abre el modal a los 10 minutos (quedan 5 min).
   // - Si el token es de 20 segundos -> abre el modal a los ~13 segundos.
-  // Además actualiza el reloj segundo a segundo para mostrar el tiempo restante en el navbar.
-  private programarTemporizadores(token: string) {
+  // Usa el instante local en que se recibió el token para evitar desfases de reloj con el servidor.
+  private programarTemporizadores(token: string, inicioMs?: number) {
     this.limpiarTemporizadores();
-    let vence: number;
     let duracionTotal: number;
+    let vence: number;
     try {
       const payload = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
-      vence = payload.exp * 1000; // a milisegundos
       duracionTotal = payload.iat ? (payload.exp - payload.iat) * 1000 : 15 * 60 * 1000;
+      const inicioGuardado = inicioMs ?? Number(globalThis.localStorage?.getItem('tokenInicio'));
+      vence = inicioGuardado ? inicioGuardado + duracionTotal : payload.exp * 1000;
     } catch {
       this.cerrarSesionVencida(); // token mal formado
       return;

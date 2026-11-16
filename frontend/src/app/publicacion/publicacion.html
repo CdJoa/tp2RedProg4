@@ -19,10 +19,46 @@
     <img class="imagen" [src]="publicacion().imagen" [alt]="publicacion().titulo" />
   }
 
+  <!-- Vista previa: últimos 3 comentarios (los más recientes primero) -->
+  @if (vistaPrevia() && totalComentarios() > 0) {
+    <section class="comentarios">
+      @for (comentario of comentarios(); track comentario._id) {
+        <div class="comentario">
+          <span class="detalle">
+            <strong>&#64;{{ comentario.usuario.nombreUsuario }}</strong>
+            · {{ comentario.createdAt | date: 'dd/MM/yyyy HH:mm' }}
+            @if (comentario.modificado) {
+              <em>(editado)</em>
+            }
+          </span>
+          <p>{{ comentario.mensaje }}</p>
+        </div>
+      }
+
+      <!-- Estilo imageboard: aviso de que el hilo sigue -->
+      @if (comentariosOcultos() > 0) {
+        <a class="ver-hilo" [routerLink]="['/publicacion', publicacion()._id]">
+          {{ comentariosOcultos() }} {{ comentariosOcultos() === 1 ? 'comentario más' : 'comentarios más' }}.
+          Ver hilo completo »
+        </a>
+      }
+    </section>
+  }
+
   <footer class="acciones">
+    <div class="botones">
     <button type="button" class="me-gusta" [class.activo]="leDiMeGusta()" [disabled]="procesando()" (click)="alternarMeGusta()">
       {{ leDiMeGusta() ? '♥' : '♡' }} {{ cantidadMeGusta() }}
     </button>
+
+    <!-- Lleva al hilo completo, donde se puede comentar -->
+    @if (vistaPrevia()) {
+      <a class="boton-comentar" [routerLink]="['/publicacion', publicacion()._id]">
+        💬 {{ totalComentarios() }} · Comentar
+      </a>
+    }
+
+    </div>
 
     @if (esMia()) {
       <button type="button" class="eliminar" (click)="confirmandoEliminar.set(true)">Eliminar</button>

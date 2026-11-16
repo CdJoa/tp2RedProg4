@@ -70,6 +70,13 @@ export class PublicacionesController {
     return this.publicacionesService.findAll(orden, direccion, usuario, offset, limit);
   }
 
+  // GET /publicaciones/:id  → trae una publicación activa por su id (para la vista en grande)
+  @UseGuards(AuthGuard)
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.publicacionesService.findOne(id);
+  }
+
   // DELETE /publicaciones/:id  → baja lógica (sólo el autor)
   @UseGuards(AuthGuard)
   @Delete(':id')

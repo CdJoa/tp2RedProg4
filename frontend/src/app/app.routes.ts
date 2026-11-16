@@ -5,6 +5,7 @@ import { Home } from './home/home';
 import { Publicaciones } from './publicaciones/publicaciones';
 import { MiPerfil } from './mi-perfil/mi-perfil';
 import { Cargando } from './cargando/cargando';
+import { PaginaPublicacion } from './pagina-publicacion/pagina-publicacion';
 import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
@@ -14,5 +15,6 @@ export const routes: Routes = [
   { path: 'registro', component: Registro, canActivate: [authGuard] },
   { path: 'home', component: Home, canActivate: [authGuard] },
   { path: 'publicaciones', component: Publicaciones, canActivate: [authGuard] },
+  { path: 'publicacion/:id', component: PaginaPublicacion, canActivate: [authGuard] },
   { path: 'mi-perfil', component: MiPerfil, canActivate: [authGuard] },
 ];

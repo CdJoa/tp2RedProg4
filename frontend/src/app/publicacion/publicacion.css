@@ -115,3 +115,71 @@
   background: linear-gradient(to bottom, #fff0ee 0%, #ffd6d0 48%, #ffbfb6 50%, #ffd2cb 100%) !important;
   box-shadow: 0 0 6px rgb(230 80 60 / 0.6) !important;
 }
+
+/* ---------- Vista previa de comentarios ---------- */
+.comentarios {
+  margin: 0 1rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+/* Cada comentario es una "respuesta" con una rayita a la izquierda */
+.comentario {
+  padding: 0.35rem 0.6rem;
+  background: #eef5fc;
+  border: 1px solid #c3d6ea;
+  border-left: 3px solid #6db3ec;
+  border-radius: 3px;
+}
+
+.comentario .detalle {
+  color: #4f6478;
+}
+
+.comentario .detalle strong {
+  color: #0b3c6e;
+}
+
+.comentario em {
+  color: #4f6478;
+}
+
+.publicacion .comentario p {
+  margin: 0.15rem 0 0;
+}
+
+/* "N comentarios más. Ver hilo completo »" */
+.ver-hilo {
+  align-self: flex-start;
+  font-size: 0.85rem;
+  color: #1f6fb8;
+  text-decoration: none;
+}
+
+.ver-hilo:hover {
+  text-decoration: underline;
+}
+
+/* Me gusta + comentar, agrupados a la izquierda */
+.acciones .botones {
+  display: flex;
+  gap: 0.4rem;
+}
+
+/* Link con la misma pinta que los botones de la barra */
+.boton-comentar {
+  padding: 0.25rem 0.85rem;
+  border: 1px solid #7a9ec7;
+  border-radius: 3px;
+  background: linear-gradient(to bottom, #ffffff 0%, #eef5fc 48%, #d9e8f7 50%, #e9f3fd 100%);
+  color: inherit;
+  text-decoration: none;
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.8) inset;
+}
+
+.boton-comentar:hover {
+  border-color: #3c7fb1;
+  background: linear-gradient(to bottom, #f2faff 0%, #d8f0fd 48%, #b7e1fb 50%, #cfeafd 100%);
+  box-shadow: 0 0 6px rgb(80 170 240 / 0.6);
+}

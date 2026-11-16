@@ -9,11 +9,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model } from 'mongoose';
 import { CreatePublicacionDto } from './dto/create-publicacion.dto.js';
 import { Publicacion } from './entities/publicacion.entity.js';
+import { Comentario } from './entities/comentario.entity.js';
 
 @Injectable()
 export class PublicacionesService {
   constructor(
     @InjectModel(Publicacion.name) private readonly publicacionModel: Model<Publicacion>,
+    @InjectModel(Comentario.name) private readonly comentarioModel: Model<Comentario>,
   ) {}
 
   // Guarda la publicación con el id del autor (viene del token)
@@ -74,6 +76,76 @@ export class PublicacionesService {
     const total = await this.publicacionModel.countDocuments(filtro);
 
     return { publicaciones, total, offset, limit };
+  }
+
+  // GET /publicaciones/:id  → devuelve la publicación con los datos del autor
+  async findOne(id: string) {
+    const publicacion = await this.buscarActiva(id);
+    return publicacion.populate('usuario', 'nombre apellido nombreUsuario imagenPerfil');
+  }
+
+  // GET /publicaciones/:id/comentarios?offset=0&limit=5
+  // Ordenados de más recientes a más antiguos (createdAt: -1)
+  async listarComentarios(publicacionId: string, offset: number, limit: number) {
+    await this.buscarActiva(publicacionId);
+    if (offset < 0 || limit < 1 || limit > 50) {
+      throw new BadRequestException('offset debe ser 0 o más, y limit entre 1 y 50');
+    }
+
+    const filtro = { publicacion: publicacionId };
+    const [comentarios, total] = await Promise.all([
+      this.comentarioModel
+        .find(filtro)
+        .sort({ createdAt: -1 })
+        .skip(offset)
+        .limit(limit)
+        .populate('usuario', 'nombre apellido nombreUsuario imagenPerfil')
+        .exec(),
+      this.comentarioModel.countDocuments(filtro),
+    ]);
+
+    return { comentarios, total, offset, limit };
+  }
+
+  // POST /publicaciones/:id/comentarios  → crea el comentario y lo devuelve con su autor
+  async crearComentario(publicacionId: string, usuarioId: string, mensaje: string) {
+    await this.buscarActiva(publicacionId);
+    const comentario = await this.comentarioModel.create({
+      publicacion: publicacionId,
+      usuario: usuarioId,
+      mensaje: mensaje.trim(),
+    });
+    return comentario.populate('usuario', 'nombre apellido nombreUsuario imagenPerfil');
+  }
+
+  // PUT /publicaciones/:id/comentarios/:comentarioId  → edita el mensaje y marca modificado: true
+  async editarComentario(
+    publicacionId: string,
+    comentarioId: string,
+    usuarioId: string,
+    mensaje: string,
+  ) {
+    await this.buscarActiva(publicacionId);
+    if (!isValidObjectId(comentarioId)) {
+      throw new BadRequestException('El id del comentario no es válido');
+    }
+
+    const comentario = await this.comentarioModel.findOne({
+      _id: comentarioId,
+      publicacion: publicacionId,
+    });
+    if (!comentario) {
+      throw new NotFoundException('El comentario no existe');
+    }
+    if (comentario.usuario.toString() !== usuarioId) {
+      throw new ForbiddenException('Sólo el autor puede editar su comentario');
+    }
+
+    comentario.mensaje = mensaje.trim();
+    comentario.modificado = true;
+    await comentario.save();
+
+    return comentario.populate('usuario', 'nombre apellido nombreUsuario imagenPerfil');
   }
 
   // DELETE /publicaciones/:id  → baja lógica (sólo el autor)

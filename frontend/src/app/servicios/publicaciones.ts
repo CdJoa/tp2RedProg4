@@ -1,7 +1,8 @@
 import { Service, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of, switchMap } from 'rxjs';
-import { PaginaPublicaciones } from '../modelos/publicacion';
+import { PaginaPublicaciones, Publicacion } from '../modelos/publicacion';
+import { Comentario, PaginaComentarios } from '../modelos/comentario';
 import { environment } from '../../environments/environment';
 import { prepararImagen } from '../validadores/preparar-imagen';
 
@@ -61,5 +62,30 @@ export class PublicacionesService {
 
   eliminar(id: string) {
     return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
+  // GET /publicaciones/:id  → una sola publicación (para la página publicación)
+  obtener(id: string) {
+    return this.http.get<Publicacion>(`${this.apiUrl}/${id}`);
+  }
+
+  // --- Comentarios ---
+
+  // GET /publicaciones/:id/comentarios?offset=...&limit=...  (más recientes primero)
+  listarComentarios(id: string, offset: number, limit: number) {
+    const params = new HttpParams().set('offset', offset).set('limit', limit);
+    return this.http.get<PaginaComentarios>(`${this.apiUrl}/${id}/comentarios`, { params });
+  }
+
+  // POST /publicaciones/:id/comentarios  (JSON: { mensaje })
+  comentar(id: string, mensaje: string) {
+    return this.http.post<Comentario>(`${this.apiUrl}/${id}/comentarios`, { mensaje });
+  }
+
+  // PUT /publicaciones/:id/comentarios/:comentarioId  (JSON: { mensaje })
+  editarComentario(id: string, comentarioId: string, mensaje: string) {
+    return this.http.put<Comentario>(`${this.apiUrl}/${id}/comentarios/${comentarioId}`, {
+      mensaje,
+    });
   }
 }
