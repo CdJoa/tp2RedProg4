@@ -1,5 +1,6 @@
 <main class="contenedor">
-  <form class="tarjeta" [formGroup]="form" (ngSubmit)="enviar()" novalidate>
+  <!-- zumbido: el formulario tiembla en cada intento fallido (como el MSN) -->
+  <form class="tarjeta" [formGroup]="form" (ngSubmit)="enviar()" novalidate [zumbido]="intentosFallidos()">
     <h1>Iniciar sesión</h1>
 
     @if (sesionVencida) {
@@ -40,7 +41,7 @@
     </div>
 
     @if (errorServidor(); as error) {
-      <p class="error-servidor">{{ error }}</p>
+      <p class="error-servidor">{{ error | errorLogin }}</p>
     }
 
     <button type="submit" class="principal" [disabled]="enviando()">

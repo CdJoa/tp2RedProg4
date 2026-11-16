@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PasswordHasher } from '@nestjs/authentication';
 import { UsuariosService } from '../usuarios/usuarios.service.js';
@@ -28,9 +28,10 @@ export class AuthService {
     if (!valido || !usuario?.password) {
       throw new UnauthorizedException('Usuario o contraseña incorrectos');
     }
-    // Baja lógica: un administrador lo deshabilitó
+    // Baja lógica: un administrador lo deshabilitó.
+    // 403 (y no 401): los datos son correctos, pero no tiene permiso para entrar
     if (usuario.activo === false) {
-      throw new UnauthorizedException('Tu usuario está deshabilitado. No estás autorizado a ingresar');
+      throw new ForbiddenException('Tu usuario está deshabilitado. No estás autorizado a ingresar');
     }
     // Si cambiaron los parámetros del hash desde que se guardó, se actualiza
     // ahora que tenemos la contraseña en texto plano.

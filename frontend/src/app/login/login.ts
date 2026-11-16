@@ -3,10 +3,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Auth } from '../servicios/auth';
-import { mensajeDeError, sinEspaciosVacios } from '../validadores/validadores';
+import { sinEspaciosVacios } from '../validadores/validadores';
+import { ErrorLoginPipe } from '../pipes/error-login-pipe';
+import { Zumbido } from '../directivas/zumbido';
 
 @Component({
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, ErrorLoginPipe, Zumbido],
   selector: 'app-login',
   styleUrl: './login.css',
   templateUrl: './login.html',
@@ -18,7 +20,10 @@ export class Login {
   private route = inject(ActivatedRoute);
 
   protected enviando = signal(false);
-  protected errorServidor = signal<string | null>(null);
+  // El error tal cual lo devuelve el back: el pipe errorLogin arma el mensaje
+  protected errorServidor = signal<HttpErrorResponse | null>(null);
+  // Cada intento fallido suma 1: la directiva zumbido hace temblar el formulario
+  protected intentosFallidos = signal(0);
   // Llega con ?vencida=true cuando se cerró la sesión porque venció el token
   protected sesionVencida = this.route.snapshot.queryParamMap.has('vencida');
   protected verPassword = signal(false);
@@ -38,6 +43,7 @@ export class Login {
     this.errorServidor.set(null);
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      this.intentosFallidos.update((n) => n + 1); // campos vacíos: también tiembla
       return;
     }
 
@@ -55,9 +61,9 @@ export class Login {
       },
       error: (err: HttpErrorResponse) => {
         this.enviando.set(false);
-        // Muestra el mensaje del back: "Usuario o contraseña incorrectos"
-        // o "Tu usuario está deshabilitado..." si un admin le dio de baja
-        this.errorServidor.set(mensajeDeError(err, 'No se pudo iniciar sesión'));
+        // 401: datos incorrectos · 403: cuenta deshabilitada (el pipe elige el mensaje)
+        this.errorServidor.set(err);
+        this.intentosFallidos.update((n) => n + 1);
       },
     });
   }
